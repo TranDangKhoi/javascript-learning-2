@@ -27,7 +27,7 @@ console.log(previousSpanSibling);
 // children: chỉ trả về một HTMLCollection chứa các tên tag không bao gồm textNodes
 
 console.log(previousSpanSibling.childNodes);
-console.log(previousSpanSibling.children);
+console.log(previousSpanSibling.children[1]); // In ra phần tử con có index là 1 (index bắt đầu từ 0)
 
 // 4. firstChild vs firstElementChild
 // firstChild: lấy phần tử con đầu tiên bao gồm cả textNode
@@ -38,3 +38,12 @@ console.log(previousSpanSibling.firstElementChild);
 
 // 5. lastChild vs lastElementChild
 // tương tự như firstChild và firstElementChild
+
+// 5. nextSibling và previousSibling
+console.log(span.nextSibling);
+console.log(span.previousSibling);
+
+// 6. nextElementSibling sau đó lại tới thằng nextElementSibling của thằng trước
+
+console.log(span.nextElementSibling.nextElementSibling);
+// trỏ tới thằng tiếp theo của thằng span2

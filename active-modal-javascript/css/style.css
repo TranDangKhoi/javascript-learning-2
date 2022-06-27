@@ -1,0 +1,83 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.modal.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    max-width: 550px;
+    background-color: white;
+    padding: 3rem;
+    border-radius: 1rem;
+    position: relative;
+    transform: scale(0);
+    transition: all 0.25s linear;
+}
+
+.modal-content.is-active {
+    max-width: 550px;
+    background-color: white;
+    padding: 3rem;
+    border-radius: 1rem;
+    position: relative;
+    transform: scale(1);
+    transition: all 200ms linear;
+}
+
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.modal-desc {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.modal-action {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0 20px;
+    margin-top: 2rem;
+}
+
+.modal-submit,
+.modal-cancel {
+    font-weight: 500;
+    border-radius: 1rem;
+    outline: none;
+    padding: 1rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.modal-submit {
+    background: rgb(46, 201, 46);
+}
+
+.modal-cancel {
+    background: red;
+}

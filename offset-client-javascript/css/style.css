@@ -1,0 +1,8 @@
+.boxed {
+    width: 200px;
+    height: 200px;
+    padding: 20px;
+    border: 5px solid black;
+    margin-left: 50px;
+    border-top: 50px solid black;
+}
