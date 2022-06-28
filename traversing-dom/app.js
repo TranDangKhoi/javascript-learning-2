@@ -27,7 +27,7 @@ console.log(previousSpanSibling);
 // children: chỉ trả về một HTMLCollection chứa các tên tag không bao gồm textNodes
 
 console.log(previousSpanSibling.childNodes);
-console.log(previousSpanSibling.children[1]); // In ra phần tử con có index là 1 (index bắt đầu từ 0)
+console.log(previousSpanSibling.children); // In ra phần tử con có index là 1 (index bắt đầu từ 0)
 
 // 4. firstChild vs firstElementChild
 // firstChild: lấy phần tử con đầu tiên bao gồm cả textNode
