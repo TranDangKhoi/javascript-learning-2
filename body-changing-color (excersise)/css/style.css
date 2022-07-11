@@ -17,4 +17,5 @@ body {
     color: white;
     margin: 5rem auto;
     background: #2cccff;
+    cursor: pointer;
 }
