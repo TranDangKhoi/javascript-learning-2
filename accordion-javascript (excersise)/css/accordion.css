@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Lato:wght@300;400&family=Open+Sans:ital,wght@0,400;0,500;1,300;1,400&family=Oswald:wght@200;300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&family=Source+Code+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+html {
+    font-size: 62, 5%;
+}
+
+body {
+    font-family: "Poppins", "roboto", sans-serif;
+    font-size: 1.6rem;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 15px;
+    margin: 10rem auto;
+}
+
+.accordion {
+    margin-bottom: 25px;
+    max-width: 500px;
+}
+
+.accordion-header {
+    padding: 20px;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-header * {
+    pointer-events: none;
+}
+
+.accordion-content {
+    border-top: 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.6;
+    background-color: rgb(227, 227, 227);
+    height: 0;
+    overflow: hidden;
+    transition: all 0.25s linear;
+    padding-top: 0.5rem;
+}
+
+.accordion-content-inner {
+    padding: 20px;
+    border: 1px solid #eee;
+}
+
+.accordion-content.is-active {
+    height: auto;
+}

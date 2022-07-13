@@ -7,6 +7,10 @@ const colors = [
   "#ffb86c",
   "#2979ff",
   "#e74c3c",
+  "#6a55cs",
+  "#a811cc",
+  "#f821cc",
+  "#ea14c3",
 ];
 function handleChangeColor() {
   const body = document.body;

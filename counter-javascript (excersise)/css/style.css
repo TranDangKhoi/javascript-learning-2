@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Lato:wght@300;400&family=Open+Sans:ital,wght@0,400;0,500;1,300;1,400&family=Oswald:wght@200;300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&family=Source+Code+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+html {
+    font-size: 62, 5%;
+}
+
+body {
+    font-family: "Poppins", "roboto", sans-serif;
+    font-size: 1.6rem;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5rem auto;
+    column-gap: 1.5rem;
+}
+
+.counter-minus,
+.counter-number,
+.counter-plus {
+    font-size: 3rem;
+}
+
+.counter-minus,
+.counter-plus {
+    background: gray;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.counter-number {
+    background: linear-gradient(to right, #9733EE, #DA22FF);
+    color: transparent;
+    -webkit-text-fill: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
