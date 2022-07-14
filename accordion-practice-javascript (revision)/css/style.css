@@ -9,28 +9,20 @@ body {
     font-size: 1.6rem;
 }
 
-.wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    row-gap: 15px;
-    margin: 10rem auto;
-}
-
 .accordion {
-    margin-bottom: 25px;
+    margin: 5rem auto;
     max-width: 500px;
 }
 
 .accordion-header {
-    padding: 20px;
-    border-radius: 4px 4px 0 0;
-    cursor: pointer;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    padding: 1rem 1.2rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    cursor: pointer;
 }
 
 .accordion-header * {
@@ -49,9 +41,12 @@ body {
     transition: all 0.25s linear;
 }
 
-.accordion-content-inner {
-    padding: 20px;
+.accordion-inner {
+    display: inline-block;
     border: 1px solid rgb(222, 222, 222);
+    padding: 2rem;
 }
 
-.accordion-content.is-active {}
+.accordion-content.active {
+    display: block;
+}

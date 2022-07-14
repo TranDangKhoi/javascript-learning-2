@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Lato:wght@300;400&family=Open+Sans:ital,wght@0,400;0,500;1,300;1,400&family=Oswald:wght@200;300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&family=Source+Code+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+html {
+    font-size: 62, 5%;
+}
+
+body {
+    font-family: "Poppins", "roboto", sans-serif;
+    font-size: 1.6rem;
+}
+
+.button {
+    display: block;
+    width: 150px;
+    border: 0;
+    outline: 0;
+    background: #07a787;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    margin: 5rem auto;
+}
+
+.modal {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.modal.active {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal.active .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal-content {
+    transition: all 200ms ease-in-out;
+    transform: scale(0);
+    background-color: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    position: relative;
+    z-index: 10;
+    padding: 30px;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+
+.modal-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 100rem;
+    color: white;
+    background-color: #20E3B2;
+    padding: 5px;
+    transform: translate(50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-close i {
+    pointer-events: none;
+}
+
+.modal-main {
+    overscroll-behavior-y: contain;
+}
