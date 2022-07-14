@@ -45,15 +45,16 @@ body {
 }
 
 .modal-content {
-    transition: all 200ms ease-in-out;
+    transition: all 250ms ease-in-out;
     transform: scale(0);
     background-color: white;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
+    max-height: 700px;
     border-radius: 12px;
     position: relative;
     z-index: 10;
-    padding: 30px;
+    padding: 3rem;
 }
 
 .modal.active .modal-content {
