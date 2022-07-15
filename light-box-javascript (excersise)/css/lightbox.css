@@ -32,9 +32,37 @@ body {
     align-items: center;
 }
 
+.lightbox-close {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+
+}
+
+.lightbox-close i {
+    color: white;
+    pointer-events: none;
+}
+
 .lightbox-content {
     width: 1000px;
     margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 5rem;
+}
+
+.lightbox-content i {
+    font-size: 2.5rem;
+    color: white;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.lightbox-content i:hover {
+    color: black;
 }
 
 .lightbox-content img {
@@ -42,4 +70,6 @@ body {
     max-height: 500px;
     object-fit: cover;
     border-radius: 1rem;
+    user-select: none;
+    -webkit-user-select: none;
 }
