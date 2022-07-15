@@ -32,31 +32,31 @@ document.body.addEventListener("click", function (e) {
     e.target.parentNode.parentNode.removeChild(e.target.parentNode);
   });
   const lightboxImg = document.querySelector(".lightbox-image");
-  if (!lightboxImg) return;
-  let lightboxSrc = "";
-  if (e.target.matches(".lightbox")) {
-    e.target.parentNode.removeChild(e.target);
-  } else if (e.target.matches(".lightbox-next")) {
-    lightboxSrc = lightboxImg.getAttribute("src");
+  if (!lightboxImg) {
+    let lightboxSrc = lightboxImg.getAttribute("src");
     index = [...images].findIndex(
       (item) => item.getAttribute("src") === lightboxSrc
     );
+  }
+  lightboxSrc = "";
+  if (e.target.matches(".lightbox")) {
+    e.target.parentNode.removeChild(e.target);
+  } else if (e.target.matches(".lightbox-next")) {
     index = index + 1;
     if (index > images.length - 1) {
       index = 0;
     }
-    const newSrc = [...images][index].getAttribute("src");
-    lightboxImg.setAttribute("src", newSrc);
+    displayNewImg(lightboxImg, index);
   } else if (e.target.matches(".lightbox-prev")) {
-    lightboxSrc = lightboxImg.getAttribute("src");
-    index = [...images].findIndex(
-      (item) => item.getAttribute("src") === lightboxSrc
-    );
     index = index - 1;
     if (index < 0) {
       index = images.length - 1;
     }
-    const newSrc = [...images][index].getAttribute("src");
-    lightboxImg.setAttribute("src", newSrc);
+    displayNewImg(lightboxImg, index);
   }
 });
+
+function displayNewImg(image, index) {
+  const newSrc = [...images][index].getAttribute("src");
+  image.setAttribute("src", newSrc);
+}
