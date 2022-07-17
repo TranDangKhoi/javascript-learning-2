@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Lato:wght@300;400&family=Open+Sans:ital,wght@0,400;0,500;1,300;1,400&family=Oswald:wght@200;300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&family=Source+Code+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+html {
+    font-size: 62, 5%;
+}
+
+body {
+    font-family: "Poppins", "roboto", sans-serif;
+    font-size: 1.6rem;
+}
+
+.dropdown {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    font-family: "Poppins", sans-serif;
+    --spacing: 20px;
+    --radius: 8px;
+    --padding: 15px;
+    --border: #eee;
+    margin: 5rem auto;
+}
+
+.dropdown-select {
+    padding: var(--padding);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    background-color: #222428;
+    font-size: 12px;
+    transition: all 0.2s linear;
+}
+
+.dropdown-select * {
+    pointer-events: none;
+}
+
+.dropdown-select+.dropdown-list.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.dropdown-list {
+    position: absolute;
+    top: calc(100% + var(--spacing));
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    background-color: #333741;
+    padding: 10px;
+}
+
+.dropdown-list:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--spacing);
+    transform: translateY(-100%);
+    background-color: transparent;
+    opacity: 0;
+}
+
+.dropdown-item {
+    padding: var(--padding);
+    cursor: pointer;
+    font-size: 12px;
+    color: white;
+    border-radius: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-item * {
+    pointer-events: none;
+}
+
+.dropdown-item:hover {
+    background-color: #2b2d35;
+}
