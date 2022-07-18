@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Lato:wght@300;400&family=Open+Sans:ital,wght@0,400;0,500;1,300;1,400&family=Oswald:wght@200;300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&family=Source+Code+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Poppins", "roboto", sans-serif;
+    font-size: 1.6rem;
+}
+
+.text {
+    color: #3D6EF7;
+    display: block;
+    font-style: 20px;
+    margin: 15rem auto;
+    width: max-content;
+    font-size: 2rem;
+}
+
+.tooltip {
+    position: relative;
+}
+
+.tooltip-text {
+    position: fixed;
+    transform: translateX(-50%);
+    color: white;
+    background: #3D6EF7;
+    display: block;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #3D6EF7;
+}
