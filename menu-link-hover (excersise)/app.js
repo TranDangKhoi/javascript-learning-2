@@ -1,5 +1,4 @@
 const links = [...document.querySelectorAll(".navigation-link")];
-
 window.addEventListener("load", function () {
   links.forEach((item) => {
     item.addEventListener("mouseenter", handleHoverLink);

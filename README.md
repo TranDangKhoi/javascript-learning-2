@@ -1,6 +1,8 @@
-# Evondev-Javascript-Course2
+# Về Javascript thì thực sự có rất nhiều thứ nếu viết hết, nhưng ở README này mình sẽ tóm lược lại những thứ quan trọng mình đã học nha, và ở repo thứ 2 về javascript này thì mình viết về DOM là chính
 
-Khóa học javascript của evondev về DOM
+- Let's get it started:
+
+### Khoi's Javascript Doc v1.0
 
 ## Các method cơ bản dùng cho class
 
@@ -65,3 +67,79 @@ VD: setTimeout ( expression, timeout ); <br>
 
 2. setInterval là gì ?<br>
    Hàm setInterval() như cái tên của nó, hàm này sẽ thường được sử dụng để thiết lập độ trễ cho các hàm sẽ được thực hiện lặp lại như là hiệu ứng (tức là chỉ khác so với setTimeOut là setInterval thực hiện lặp lại nhiều lần cho tới khi có dòng lệnh dừng hiệu ứng bằng clearInterval)<br>
+
+# offset, client, window
+
+- Về **offset** thì mình sẽ không giải thích nhiều, mà đi thẳng luôn vào ví dụ cho dễ hiểu:
+- Giả dụ, ta code **HTML, CSS, Javascript** cho ra 1 khối hình vuông màu có viền màu đen như sau **(LƯU Ý: MÌNH SẼ CODE THÊM CẢ CÁC CONTENT KHÁC NỮA ĐỂ CÁC BẠN HIỂU RÕ HƠN)**:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Các thẻ meta -->
+    <!-- Reset CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css"
+    />
+    <!-- File CSS để code ra hình vuông có viền đen -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <h3>
+      <a href="#" class="demo">
+        <p>Demo anchor</p>
+        <strong>Demo children</strong>
+      </a>
+      <span class="span">
+        <strong>Tran Dang Khoi</strong>
+      </span>
+      <span class="span2">
+        <strong>Tofu</strong>
+      </span>
+      <span class="span3">
+        <strong>Tofu</strong>
+      </span>
+    </h3>
+    <div class="boxed"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
+```
+
+- File style.css, mình sẽ code đơn giản như sau:
+
+```css
+.boxed {
+  width: 200px;
+  height: 200px;
+  padding: 20px;
+  border: 5px solid black;
+  margin-left: 50px;
+}
+```
+
+- Còn bên file app.js, mình sẽ code luôn và ta cùng xem hình mà mình code và output ra console nó như thế nào nhá
+
+```js
+console.log(box.offsetWidth); // trả về độ rộng của box
+// offsetHeight -> trả về chiều cao của phần tử
+console.log(box.offsetHeight); // trả về độ cao của box
+console.log(box.offsetLeft); // trả về chiều dài của nó so với bên trái
+console.log(box.offsetTop); // trả về chiều dài của nó so với bên trên
+console.log(box.offsetParent); // trả về phần tử cha để lấy giá trị của phần tử cha
+```
+
+- **Kết quả mình nhận được ở trang web**:
+  ![Ảnh](https://discloud-storage.herokuapp.com/file/647b7a7bdf9696475fb2e118f666313b/box.png)
+
+- **Kết quả mình nhận được ở console**:
+  ![Anh](https://discloud-storage.herokuapp.com/file/2df204b58a2bb618207f080a26f68ba2/box.png)
+
+- Như các bạn thấy, nó đã trả về đúng kết quả, để chứng minh ta cùng nhìn vào hình sau:
+
+  ![asd](https://discloud-storage.herokuapp.com/file/9aa3adc383cf32f37363577808fccee6/box.png)
+
+- Ta sẽ cộng thử tất cả vào với nhau nha 150 + padding của cả 2 bên (20 + 20) + 2 bên viền đen, mỗi bên 5px (5px + 5px). **VÀ CUỐI CÙNG**, sẽ thực sự ra tổng cộng là 200 như trong hình output của console, và đương nhiên các kết quả khác cũng như vậy rồi ^^
