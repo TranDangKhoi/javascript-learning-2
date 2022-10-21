@@ -7,24 +7,25 @@ html {
 body {
     font-family: "Poppins", "roboto", sans-serif;
     font-size: 1.6rem;
+    min-height: 500vh;
 }
 
-.navigation {
+.menu {
     width: max-content;
     margin: 2rem auto;
 }
 
-.navigation-menu {
+.menu-list {
     display: flex;
     column-gap: 2.5rem;
 }
 
-.navigation-link {
+.menu-link {
     text-decoration: none;
     color: black;
 }
 
-.navigation-item {
+.menu-item {
     font-size: 2rem;
     color: black;
     padding-bottom: 5px;
@@ -34,11 +35,13 @@ body {
 
 .line-effect {
     width: 0;
-    height: 2px;
+    height: 4px;
     background: #2cccff;
     position: fixed;
     pointer-events: none;
+    transition: all 250ms ease-in-out;
 }
+
 
 /* .navigation-link::after {
     content: "";
