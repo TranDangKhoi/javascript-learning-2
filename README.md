@@ -254,7 +254,9 @@ document.addEventListener("mousemove", function (e) {
 });
 ```
 
-# getBoundingClientRect
+- pageXY và clientXY thường được sử dụng để làm hiệu ứng zoom vào ảnh, hiển thị/thay đổi nội dung khi hover vào 1 điểm nào đó, ...
+
+## getBoundingClientRect
 
 - getBoundingClientRect là gì ? Nó là một function được tích hợp sẵn của javascript dùng để lấy ra tọa độ của phần tử tính theo page và viewport
 
@@ -266,4 +268,99 @@ document.addEventListener("mousemove", function (e) {
 
 - getBoundingClientRect thường được dùng để code ra tooltip, hover effect, ...
 
-#
+## Sự kiện keypress khác gì keydown
+
+- keypress: Sẽ ignore những phím không phải chữ/số, ví dụ như backspace, shift, pageup, pagedown, ...
+
+- keydown: Chấp nhận tất cả các key hợp lệ có trong bảng ASCII
+
+## Sự kiện change
+
+- Sự kiện change thường được sử dụng cho các loại input (radio, text, password, checkbox, ...) để xác định khi có sự thay đổi
+
+## Sự kiện input
+
+- Bản chất không khác gì keypress, keydown nhưng nó sẽ lấy được value của input khi vừa press xong, còn keypress và keydown chỉ lấy được value của input trước đó 1 bậc
+
+- Ví dụ bạn gõ vào input là: `Tôi tên là Khôi`.
+
+- Thì lúc này nếu bạn sử dụng keydown, keypress, change thì input value vẫn chỉ nhận là `Tôi tên là Khô` nên nó không hoàn toàn đúng
+
+## Debounce là gì ?
+
+- Là một kỹ thuật để bạn hạn chế function được gọi ra quá nhiều lần mà không cần thiết.
+
+- Ví dụ, khi bạn tìm kiếm một sản phẩm có cái tên siêu dài **(VD: Laptop Gaming Asus Rog Strix)**, thì số lần function search được thực hiện sẽ tương đương với số kí tự có trong tên sản phẩm, ví dụ tên sản phẩm có 22 kí tự, function tìm kiếm cũng sẽ phải thực hiện 22 lần, DO **mỗi lần bấm một từ thì phải thực hiện search lại một lần**.
+  <br>
+  -> Cho nên ta phải sử dụng debounce để hạn chế invoke function search liên tục **VÌ điều đó thực sự không tốt một chút nào**, ảnh hưởng kha khá tới hiệu năng trang web nếu phải hiển thị nhiều sản phẩm mà không có limit số sản phẩm mỗi lần hiển thị.
+
+## offsetWidth và scrollWidth
+
+- Giữa `offsetWidth` và `scrollWidth` có 1 điểm khác nhau mà nếu không để ý, đọc kĩ bạn có thể bỏ qua
+
+- Giả dụ, mình đang code ra **1 khối hình vuông** có **width:200px, height:200px**
+
+```html
+<!-- HTML -->
+<div class="boxed"></div>
+<script src="app.js"></script>
+```
+
+```css
+/* CSS */
+.boxed {
+  width: 200px;
+  height: 200px;
+  background: orange;
+  overflow: auto;
+}
+```
+
+- Lúc này, nếu bạn **thực hiện console.log** ra kết quả của `offsetWidth` và `scrollWidth` của **.boxed** thì chắc chắn sẽ không có gì khác nhau, cả hai đều bằng nhau rồi, nhưng điểm khác nhau của `offsetWidth` và `scrollWidth` đó chính là nếu **BÊN TRONG thằng .boxed mà có bọc một thằng con có width lớn hơn .boxed, sau đó CSS cho boxed overflow: auto** thì kết quả mà ta lấy ra được lúc này chắc chắn sẽ khác nhau:
+
+```html
+<div class="boxed">
+  <div class="boxed-content"></div>
+</div>
+<script src="app.js"></script>
+```
+
+```css
+.boxed {
+  width: 200px;
+  height: 200px;
+  background: orange;
+  overflow: auto;
+}
+
+.boxed-content {
+  width: 600px;
+  height: 600px;
+}
+```
+
+```js
+// scrollWidth vs offsetWidth
+const boxed = document.querySelector(".boxed");
+
+console.log(boxed.offsetWidth);
+// Output: 200px
+console.log(boxed.scrollWidth);
+// Output: 600px
+```
+
+## scrollIntoView là gì?
+
+- Là 1 phương thức trong JS để scroll tới element. Ví dụ, ta có một thanh **Navigation Bar**, và khi click vào một button nào đó, nó sẽ scroll tới đó, thì button đó phải gọi tới phương thức navigationBar.scrollIntoView()
+
+- VD:
+
+```js
+const navigationBar = document.querySelector(".navigation-bar");
+
+const scrollUpButton = document.querySelector(".scroll-up-button");
+
+scrollUpButton.addEventListener("click", function () {
+  navigationBar.scrollIntoView();
+});
+```
