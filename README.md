@@ -69,6 +69,7 @@ VD: setTimeout ( expression, timeout ); <br>
    Hàm setInterval() như cái tên của nó, hàm này sẽ thường được sử dụng để thiết lập độ trễ cho các hàm sẽ được thực hiện lặp lại như là hiệu ứng (tức là chỉ khác so với setTimeOut là setInterval thực hiện lặp lại nhiều lần cho tới khi có dòng lệnh dừng hiệu ứng bằng clearInterval)<br>
 
 # Update v1.0.1:
+
 # offset, client, window
 
 - Về **offset** thì mình sẽ không giải thích nhiều, mà đi thẳng luôn vào ví dụ cho dễ hiểu:
@@ -365,3 +366,283 @@ scrollUpButton.addEventListener("click", function () {
   navigationBar.scrollIntoView();
 });
 ```
+
+# onclick và addEventListener("click")
+
+- Trước tiên mình sẽ nói cách viết
+
+```html
+<!-- HTML -->
+<button class="button">Click me!</button>
+```
+
+```js
+const button = document.querySelector(".button");
+
+function handleClick() {
+  console.log("Clicked");
+}
+
+// Sử dụng onclick
+button.onclick = handleClick;
+// Sử dụng addEventListener("click")
+button.addEventListener("click", handleClick);
+```
+
+- Khác nhau:
+
+  - Cách viết
+  - onClick chỉ add được 1 event handler, trong khi đó addEventListener có thể xử lý nhiều events cùng 1 lúc
+  - addEventListener có thể sử dụng capture, bubble và once
+
+- Ví dụ, nếu ta có 2 **functions** trở lên:
+
+```js
+const button = document.querySelector(".button");
+// First function
+function handleClick() {
+  console.log("Clicked");
+}
+// Second function
+function handleClick2() {
+  console.log("Clicked 2");
+}
+
+// Sử dụng onclick
+button.onclick = handleClick;
+button.onclick = handleClick2;
+// Output: Clicked 2
+```
+
+- Vì **function handleClick của event onclick thứ nhất** đã bị **function handleClick2 event onclick thứ 2** đè lên, nên chỉ thực thi được **function thứ 2 thôi**
+
+- Còn đối với addEventListener thì sao ?
+
+```js
+const button = document.querySelector(".button");
+// First function
+function handleClick() {
+  console.log("Clicked");
+}
+// Second function
+function handleClick2() {
+  console.log("Clicked 2");
+}
+
+button.addEventListener("click", handleClick);
+button.addEventListener("click", handleClick2);
+
+// Output:
+// Clicked
+// Clicked 2
+```
+
+## bubble vs capture vs once
+
+- 3 cái này là option để sử dụng trong function addEventListener():
+
+  - bubble: Chạy từ ngoài vào trong
+  - capture: Chạy từ trong ra ngoài
+  - once: Chỉ chạy 1 lần duy nhất
+
+## Local Storage là gì ? (Code thì đơn giản nhưng để hiểu sâu thì khá phức tạp :') cry cry)
+
+- Local Storage là kho lưu trữ ở dưới dạng local, lưu bên trong trình duyệt của máy tính và có type là một object
+- Một vài điều thú vị và ưu điểm của Local Storage:
+  - là Javascript thuần! Thứ gây ức chế nhất về cookies đó là nó cần được tạo bởi web server ! Nếu bạn đang build một static site đơn giản thì việc dùng Local Storage đồng nghĩa với các webpage của bạn có thể chạy độc lập với bất kì server nào -> không cần ngôn ngữ BE nào hay logic nào để lưu data trong browser
+  - Một điều nữa về local storage đó là nó không có nhiều size constraint (ràng buộc kích cỡ) như cookies. Local Storage cung cấp ít nhất 5MB data storage qua tất cả các web browser, hơn rất nhiều so với cookies (max 4KB)
+    -> Chính 2 điều trên làm cho Local Storage trở nên hữu ích nếu bạn cache một số app data trong browser để dùng sau. Vì với 4KB là không nhiều, local storage là một trong những option thay thế duy nhất
+- Đã có ưu điểm thì cũng phải có nhược điểm, vậy local storage có gì những gì không tốt
+  - Local Storage cực kì basic, API rất đơn giản:
+  * Nó chỉ có thể lưu string data -> Nó trở nên vô dụng khi muốn lưu trữ các loại data phức tạp hơn.
+  * Nó có đồng bộ -> đồng nghĩa mỗi local storage operation bạn chạy sẽ chỉ được một lần duy nhất
+  * Các web worker không thể dùng nó, nếu bạn muốn build một app tận dụng background process để tăng hiệu suất, các chrome extensions, bạn không thể dùng local storage vì nó không có sẵn cho các web server
+  * Nó vẫn giới hạn size của data bạn có thể lưu trữ. Đây là một khoản khá hạn hẹp cho những người build app mà có lượng data lớn hoặc cần phải function offline
+  * Tính bảo mật kém bởi các hacker có thể sử dụng Cross Site Scripting (XSS), DNS spoofing attacks... để tấn công.
+    <br>
+    -> Túm cái váy lại thì, chỉ nên dùng local storage khi cần các info có sẵn mà không quá nhạy cảm, không cần dùng cho các app cao cấp, không quá 5MB và chỉ chứa string data
+- CHÚ Ý:
+  - Không lưu các JSON Web Tokens(JWT) trong local storage
+  - Nếu các link bạn nhúng vào website bị hack thì các hacker có thể dễ dàng lấy hết thông tin trong local storage của người dùng
+
+## Regular Expression hay Regex là gì ? (kiến thức khó học thuộc và khó nhớ)
+
+- Regular expression hay còn có tên gọi là biểu thức chính quy, được dùng để xử lý chuỗi nâng cao thông qua biểu thức riêng -> những biểu thức này sẽ có những nguyên tắc riêng và bạn phải tuân theo nguyên tắc đó thì biểu thức của bạn mới hoạt động được.
+- Hầu hết các ngôn ngữ lập trình nào cũng có khái niệm về RegEx (PHP, Javascript, Java, ...) nhưng hôm nay mình sẽ đưa ra ví dụ về Regex trong Javascript (vì mình học khá mỗi nó :'( )
+- Có tất cả 9 thứ tiêu biểu bạn cần học về regex trong Javascript:
+
+  - Cách khởi tạo một regex (/.../)
+  - Anchor (^, $)
+  - Ranges [] [a-z] [A-Z] [0-9] ...
+  - Meta sequences (\d, \D, \w, \W, \s, \S, \n, \t, ., [^])
+  - Quantifiers ({n}, {n,m} , + , ?, \*)
+  - Flag (g,i,m)
+  - Groups() : Hợp thể các biểu thức regex vào nhau
+  - Boundaries (\b, \B)
+  - Last but not least, replace chuỗi string bằng regex trong Javascript <br>
+
+  ```js
+    VD:
+    const str = "hello, hello, hello!!!";
+    str.replace(/hello/g, "hi")
+    Output: "hi, hi, hi!!!"
+
+  ```
+
+- Các kí hiệu trên thì bất cứ ai đang đọc tự tìm hiểu nha hê, mình lười không giải nghĩa hết từng cái được
+
+## Async và Defer trong script tag
+
+- Async:
+  - Sử dụng async trong trường hợp khi các bạn muốn sử dụng dịch vụ bên thứ 3 (Quảng cáo Google, Facebook, ...) muốn chèn vào trang web của mình -> thì sử dụng async để chạy độc lập, không phụ thuộc vào các script khác, không quan tâm DOM chạy hay chưa
+- Defer:
+  - Sử dụng khi muốn chạy script theo một thứ tự nhất định để các script có thể kế thừa function của nhau và để DOM load hết rồi mới load script
+
+## i++ và ++i khác nhau thế nào ?
+
+- i++ là gán giá trị cho i trước rồi tăng sau
+- ++i là tăng trước rồi gán giá trị cho i sau
+
+## Closure in Loop
+
+## Local Storage và Session Storage
+
+- Local Storage thì khi bạn đóng tab đi mở lại nó vẫn lưu trong storage cho bạn
+- Session Storage thì khi đóng tab đi mở lại nó sẽ mất hoàn toàn và không lưu lại gì hết
+
+## Những trường hợp không nên sử dụng arrow function
+
+- Khi làm việc với những event handler function mà cần sử dụng từ khóa this. Bởi khi dùng arrow function thì function sẽ không hiểu this là gì cả
+
+- Khi làm việc với function trong object
+
+```js
+  VD:
+  const student = {
+  mark: 5;
+  increment: () => {
+  return this.mark++;
+    }
+  }
+
+  console.log(student.increment()); // NaN
+```
+
+## Đệ Quy Aka Recursion ("Nó" gọi lại chính nó)
+
+- Ví dụ một bài toán đếm ngược dưới đây nếu đếm ngược từ 10 ta có thể làm đơn giản = vòng lặp for NHƯNG KHÔNG, mình không thích làm theo cách dơn giản, phải phức tạp một chút
+
+```js
+function countDown(number) {
+  //  countDown ở đây là "nó"
+  console.log(number);
+  countDown(number - 1); // "Nó" gọi lại chính "nó - 1"
+}
+countDown(10);
+```
+
+- Nhưng mà viết ở trên nếu ta check màn hình console ta thấy nó chạy hoài tới âm vô cực ==> phải dừng đệ quy lại không thì rất nguy hiểm
+
+- if (condition) stop recursive else run recursive
+
+## Local Storage và Session Storage
+
+- Session Storage nếu tắt tab đi thì nội dung lưu bên trong sẽ biến mất còn Local Storage thì không
+
+## Những trường hợp không nên sử dụng Arrow Function
+
+- Nếu cần sử dụng tới this thì không nên sử dụng arrow function, đặc biệt là trong event handler (addEventListener), object
+
+## Prototype là gì?
+
+- Khi một thằng dev khác cứ đi theo và hỏi bạn “**Prototype** là cái đếu gì?”, hãy trả lời nó: "Là cái thằng **cha** mày, hỏi suốt". Câu trả lời này có phần hơi bố láo nhưng lại khá là chính xác, có thể hiểu protoype nôm na là **khuôn hoặc là cha** của một **object**.
+
+- Trong **JavaScript**, trừ **undefined**, toàn bộ các kiểu còn lại đều là **object**. **Các kiểu string, number, boolean** lần lượt là **object dạng String, Number, Boolean**. **Mảng** là **object dạng Array**, **hàm là object dạng Function**. **Prototype** của mỗi object **chính là cha của nó**, **cha của String là String.prototype**, **cha của Number là Number.prototype**, **của Array là Array.prototype**.
+
+- Trong JavaScript, việc kế thừa được hiện thực thông qua prototype. Khi ta gọi property hoặc function của một object, JavaScript sẽ tìm trong chính object đó, nếu không có thì tìm lên cha của nó. Do đó, ta có thể gọi các hàm toUpperCase, trim trong String là do các hàm đó đã tồn tại trong String.prototype.
+  ![Anh](https://toidicodedao.files.wordpress.com/2016/01/prototype.jpg)
+
+- Khi ta thêm function cho prototype, toàn bộ những thằng con của nó cũng học được function tương tự.
+
+```js
+var str = "abc"; // str là string, cha nó là String.prototype
+
+// nhân đôi chuỗi đưa vào
+String.prototype.duplicate = function () {
+  return this + this;
+};
+
+console.log(str.duplicate()); // Tìm thấy hàm duplicate trong prototype
+```
+
+- Như mình đã nói, Array, Number hay String có cha là Object, do đó chúng đều có các hàm như constructor, hasOwnProperty, toString thuộc về của Object.prototype.
+
+- Nhắc lại một chút kiến thức trong bài viết trước về object: Ta có 2 cách để khởi tạo object, đó là sử dụng object literal và Constructor Function. Nếu dùng object literal, object được tạo ra sẽ có prototype là Object.protoype. Nếu dùng constructor function, object sẽ có một prototype mới, prototype mới này kế thừa Object.prototype.
+
+```js
+var person = {
+  firstName: "Hoang",
+  lastName: "Pham",
+  showName: function () {
+    console.log(this.firstName + " " + this.lastName);
+  },
+}; // object này có prototype là Object.prototype
+
+function Person(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+  this.showName = function () {
+    console.log(this.firstName + " " + this.lastName);
+  };
+}
+
+var otherPerson = new Person("Hoang", "Pham"); // object này có prototype là Person.prototype
+// Prototype mới: Person.prototype được tạo ra
+// Person.prototype kế thừa Object.prototype
+```
+
+- Những object được tạo ra bằng cách gọi new Person() đều có prototype là Person.prototype. Nếu muốn thêm trường hay hàm cho các object này, chỉ cần thêm 1 lần vào prototype là xong. Hiểu nôm na thì prototype cũng có vài phần giống với class, mỗi tội sida hơn.
+
+```js
+function Person(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+}
+
+Person.prototype.love = function () {
+  console.log("XXX");
+};
+
+var otherPerson = new Person("Hoang", "Pham"); // object này có prototype là Person.prototype
+otherPerson.love(); // XXX
+```
+
+# Prototype dùng để làm gì ?
+
+- Tại sao lại đẻ ra cái khái niệm prototype này làm gì? Xin thưa với các bạn, đó là do sự sida của JavaScript. Trong JavaScript không có khái niệm class, do vậy, để kế thừa các trường/hàm của một object, ta phải sử dụng prototype.
+
+```js
+function Person() {
+  this.firstName = "Per";
+  this.lastName = "son";
+  this.sayName = function () {
+    return this.firstName + " " + this.lastName;
+  };
+}
+
+// Viết một Constructor Function khác
+function SuperMan(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+}
+
+// Ta muốn SuperMan sẽ kế thừa các thuộc tính của Person
+// Sử dụng prototype để kế thừa
+SuperMan.prototype = new Person();
+
+// Tạo một object mới bằng Constructor Function
+var sm = new SuperMan("Hoang", "Pham");
+sm.sayName(); // Hoang Pham. Hàm này kế thừa từ prototype của Person
+```
+
+- Nói nôm na, prototype có phần giống class, được sử dụng để hiện thực việc kế thừa (interitance) trong JavaScript.
