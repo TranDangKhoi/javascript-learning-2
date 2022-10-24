@@ -589,7 +589,93 @@ showName(); //Khoi Tran. Object gọi hàm showName vẫn là object window
 
 - Cho tới khi bạn đã nhiều kinh nghiệm, bắt đầu học sang những thứ nâng cao thì BÙM, bạn lại gặp phải **this**, sự đáng sợ và khó chịu của this sẽ dần lộ ra qua các ví dụ dưới đây:
 
-### lálkf
+#### Rắc rối 1: Hàm được truyền vào như một callback
+
+- Giả sử, ta muốn khi người dùng click vào một button, ta sẽ gọi hàm showName của user. Vô cùng đơn giản, ta chỉ cần truyền hàm showName vào như một callback cho hàm click là xong. **NHỈ** ?
+
+```js
+var person = {
+  firstName: "Hoang",
+  lastName: "Pham",
+  showName: function () {
+    console.log(this.firstName + " " + this.lastName);
+  },
+};
+
+//Ở đây this sẽ là object person
+person.showName(); //Hoang Pham.
+
+$("button").click(person.showName); //showName truyền vào như callback
+```
+
+- Lúc này chắc hẳn bạn đã hồn nhiên đi check dev tools của chrome và thốt lên "WTF, sao lại không chạy? Sao object this không có trường firstName và lastName ?". Kiểm tra kĩ chút nữa thì ta thấy this ở đây là chính button ta đã click vào, chứ không còn là object person như ví dụ trên nữa.
+
+- Trong trường hợp trên, ta có thể sửa lỗi bằng cách sử dụng anonymous function, hoặc dùng hàm bind để xác định tham số this cho hàm truyền vào là được.
+
+```js
+var person = {
+  firstName: "Khoi",
+  lastName: "Tran",
+  showName: function () {
+    console.log(this.firstName + " " + this.lastName);
+  },
+};
+
+$("button").click(person.showName); //showName truyền vào như callback, ở đây this chính là button
+
+// Dùng anonymous function
+$("button").click(function () {
+  person.showName();
+});
+
+// Dùng bind
+$("button").click(person.showName.bind(person)); //this ở đây vẫn là object person
+```
+
+#### Rắc rối 2: Sử dụng this trong anonymous function
+
+- Giả sử, object person có một danh sách bạn bè, bạn muốn viết một function show toàn bộ bạn bè của person đó. Theo lý thuyết, ta sẽ viết như sau:
+
+```js
+var person = {
+  firstName: "Hoang",
+  lastName: "Pham",
+  friends: ["Minh", "Sang", "Khoa", "Hoang"],
+  showFriend: function () {
+    for (var i = 0; i < this.friends.length; i++)
+      console.log(this.firstName + " have a friend named " + this.friends[i]);
+  },
+  showFriendThis: function () {
+    this.friends.forEach(function (fr) {
+      console.log(this.firstName + " have a friend named " + fr);
+    });
+  },
+};
+
+person.showFriend(); //Hàm chạy đúng
+
+person.showFriendThis(); // Hàm chạy sai
+```
+
+- Với hàm showFriend, khi ta dùng hàm for thường, hàm chạy đúng như mong muốn. Tuy nhiên, trong trường hợp dưới, khi ta dùng hàm forEach (xem lại ở đây), truyền vào một anonymous function, this ở đây lại thành object window, do đó trường firstName bị underfined.
+
+- Trong trường hợp này, cách giải quyết ta thường dùng là tạo một biến để gán giá trị this vào, và truy xuất tới giá trị đó trong anonymous function.
+
+```js
+var person = {
+  firstName: "Hoang",
+  lastName: "Pham",
+  friends: ["Minh", "Sang", "Khoa", "Hoang"],
+  showFriendFixed: function () {
+    var personObj = this; //Gán giá trị this vào biến personObj
+    this.friends.forEach(function (fr) {
+      console.log(personObj.firstName + " have a friend named " + fr);
+    });
+  },
+};
+
+person.showFriendFixed(); //Hàm chạy đúng
+```
 
 ## Prototype là gì?
 
@@ -688,3 +774,5 @@ sm.sayName(); // Hoang Pham. Hàm này kế thừa từ prototype của Person
 # Trói đít (this) lại bằng bind
 
 - **Bind** là một hàm nằm trong **Function.prototype**, do đó **chỉ có function mới có khả năng gọi nó**. Như đã nhắc tới về this, bind được dùng để xác định tham số this cho một function.
+
+Ideas: toidicodedao.com
