@@ -553,6 +553,44 @@ countDown(10);
 
 - Nếu cần sử dụng tới this thì không nên sử dụng arrow function, đặc biệt là trong event handler (addEventListener), object
 
+## this trong javascript - super sida
+
+- this – một từ khóa dễ làm đau đầu các lập trình viên JS.
+
+- Khi bạn vẫn còn ngây thơ, nghĩ rằng this vô cùng dễ hiểu, hiền lành, vô hại, hẳn bạn cũng nhớ từ khóa this dùng để trỏ tới chính **object gọi hàm đó**. ví dụ:
+
+```js
+var person = {
+  firstName: "Khoi",
+  lastName: "Tran",
+  showName: function () {
+    console.log(this.firstName + " " + this.lastName);
+  },
+};
+
+//Ở đây this sẽ là object person
+person.showName(); //Khoi Tran.
+```
+
+- Một trường hợp khác, khi ta khai báo **biến global và hàm global**, toàn bộ các biến và hàm đó sẽ nằm trong một object có tên là **window**. Lúc này, khi ta gọi hàm showName, chính object **window** là object gọi hàm đó, this trỏ tới chính object **window**. ví dụ:
+
+```js
+var firstName = "Khoi",
+  lastName = "Tran";
+// 2 biến này nằm trong object window
+
+function showName() {
+  console.log(this.firstName + " " + this.lastName);
+}
+
+window.showName(); // Khoi Tran. this trỏ tới object window
+showName(); //Khoi Tran. Object gọi hàm showName vẫn là object window
+```
+
+- Cho tới khi bạn đã nhiều kinh nghiệm, bắt đầu học sang những thứ nâng cao thì BÙM, bạn lại gặp phải **this**, sự đáng sợ và khó chịu của this sẽ dần lộ ra qua các ví dụ dưới đây:
+
+### lálkf
+
 ## Prototype là gì?
 
 - Khi một thằng dev khác cứ đi theo và hỏi bạn “**Prototype** là cái đếu gì?”, hãy trả lời nó: "Là cái thằng **cha** mày, hỏi suốt". Câu trả lời này có phần hơi bố láo nhưng lại khá là chính xác, có thể hiểu protoype nôm na là **khuôn hoặc là cha** của một **object**.
@@ -613,13 +651,13 @@ Person.prototype.love = function () {
   console.log("XXX");
 };
 
-var otherPerson = new Person("Hoang", "Pham"); // object này có prototype là Person.prototype
+var otherPerson = new Person("Tran", "Khoi"); // object này có prototype là Person.prototype
 otherPerson.love(); // XXX
 ```
 
 # Prototype dùng để làm gì ?
 
-- Tại sao lại đẻ ra cái khái niệm prototype này làm gì? Xin thưa với các bạn, đó là do sự sida của JavaScript. Trong JavaScript không có khái niệm class, do vậy, để kế thừa các trường/hàm của một object, ta phải sử dụng prototype.
+- Tại sao lại đẻ ra cái khái niệm prototype này làm gì? Xin thưa với các bạn, đó là do sự sida của JavaScript. Trong JavaScript không có khái niệm class (ES5), do vậy, để kế thừa các trường/hàm của một object, ta phải sử dụng prototype.
 
 ```js
 function Person() {
@@ -646,3 +684,7 @@ sm.sayName(); // Hoang Pham. Hàm này kế thừa từ prototype của Person
 ```
 
 - Nói nôm na, prototype có phần giống class, được sử dụng để hiện thực việc kế thừa (interitance) trong JavaScript.
+
+# Trói đít (this) lại bằng bind
+
+- **Bind** là một hàm nằm trong **Function.prototype**, do đó **chỉ có function mới có khả năng gọi nó**. Như đã nhắc tới về this, bind được dùng để xác định tham số this cho một function.
