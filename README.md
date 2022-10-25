@@ -608,9 +608,9 @@ person.showName(); //Hoang Pham.
 $("button").click(person.showName); //showName truyền vào như callback
 ```
 
-- Lúc này chắc hẳn bạn đã hồn nhiên đi check dev tools của chrome và thốt lên "WTF, sao lại không chạy? Sao object this không có trường firstName và lastName ?". Kiểm tra kĩ chút nữa thì ta thấy this ở đây là chính button ta đã click vào, chứ không còn là object person như ví dụ trên nữa.
+- Lúc này chắc hẳn bạn đã hồn nhiên đi check **dev tools của chrome** và **thốt lên "WTF, sao lại không chạy? Sao object this không có trường firstName và lastName ?".** Kiểm tra kĩ chút nữa thì ta thấy **this** ở đây là chính **button ta đã click vào, chứ không còn là object person như ví dụ trên nữa**.
 
-- Trong trường hợp trên, ta có thể sửa lỗi bằng cách sử dụng anonymous function, hoặc dùng hàm bind để xác định tham số this cho hàm truyền vào là được.
+- Trong trường hợp trên, ta có thể sửa lỗi bằng cách sử dụng `anonymous function`, hoặc dùng hàm bind để xác định tham số this cho hàm truyền vào là được.
 
 ```js
 var person = {
@@ -640,9 +640,9 @@ $("button").click(person.showName.bind(person)); //this ở đây vẫn là obje
 var person = {
   firstName: "Hoang",
   lastName: "Pham",
-  friends: ["Minh", "Sang", "Khoa", "Hoang"],
+  friends: ["Minh", "Sang", "Khoi", "Hoang"],
   showFriend: function () {
-    for (var i = 0; i < this.friends.length; i++)
+    for (let i = 0; i < this.friends.length; i++)
       console.log(this.firstName + " have a friend named " + this.friends[i]);
   },
   showFriendThis: function () {
@@ -657,7 +657,7 @@ person.showFriend(); //Hàm chạy đúng
 person.showFriendThis(); // Hàm chạy sai
 ```
 
-- Với hàm showFriend, khi ta dùng hàm for thường, hàm chạy đúng như mong muốn. Tuy nhiên, trong trường hợp dưới, khi ta dùng hàm forEach (xem lại ở đây), truyền vào một anonymous function, this ở đây lại thành object window, do đó trường firstName bị underfined.
+- Với hàm showFriend, khi ta dùng hàm for thường, hàm chạy đúng như mong muốn. Tuy nhiên, trong trường hợp dưới, khi ta dùng hàm forEach, truyền vào một anonymous function, this ở đây lại thành object window, do đó trường firstName bị underfined.
 
 - Trong trường hợp này, cách giải quyết ta thường dùng là tạo một biến để gán giá trị this vào, và truy xuất tới giá trị đó trong anonymous function.
 
@@ -665,7 +665,7 @@ person.showFriendThis(); // Hàm chạy sai
 var person = {
   firstName: "Hoang",
   lastName: "Pham",
-  friends: ["Minh", "Sang", "Khoa", "Hoang"],
+  friends: ["Minh", "Sang", "Khoi", "Hoang"],
   showFriendFixed: function () {
     var personObj = this; //Gán giá trị this vào biến personObj
     this.friends.forEach(function (fr) {
@@ -676,6 +676,8 @@ var person = {
 
 person.showFriendFixed(); //Hàm chạy đúng
 ```
+
+#### Rắc rối 3: Khi hàm được gán vào một biến
 
 ## Prototype là gì?
 
