@@ -777,4 +777,64 @@ sm.sayName(); // Hoang Pham. Hàm này kế thừa từ prototype của Person
 
 - **Bind** là một hàm nằm trong **Function.prototype**, do đó **chỉ có function mới có khả năng gọi nó**. Như đã nhắc tới về this, bind được dùng để xác định tham số this cho một function.
 
+- Như trong trường hợp dưới đây, khi ta truyền hàm **showName** vào như một **callback** cho hàm **button.click**, giá trị this ở đây chính là **button** đó. Để hàm chạy đúng, ta dùng **bind để bind giá trị person và this**.
+
+```js
+var person = {
+  firstName: "Hoang",
+  lastName: "Pham",
+  showName: function () {
+    console.log(this.firstName + " " + this.lastName);
+  },
+};
+
+//showName truyền vào như callback, ở đây this chính là button
+$("button").click(person.showName);
+
+// Dùng bind để xác định giá trị this
+$("button").click(person.showName.bind(person)); //this ở đây vẫn là object person
+```
+
+- Không chỉ bind được giá trị this, bind còn bind được các tham số truyền vào cho hàm nữa. Do đó, Bind còn được dùng để viết partial function.
+
+- Nói một cách đơn giản, partial function tức là tạo ra 1 function mới từ 1 function cũ bằng cách gán mặc định một số tham số cho function cũ đó. Bạn hãy xem ví dụ cụ thể sau. Mình có một hàm log đơn giản có 3 tham số:
+
+```js
+function log(level, time, message) {
+  console.log(level + " – " + time + ": " + message);
+}
+```
+
+- Giả sử mình muốn tạo một hàm log khác, ghi lại các log error của hôm nay, mình có thể viết một hàm mới dựa theo hàm log cũ:
+
+```js
+function log(level, time, message) {
+  console.log(level + " – " + time + ": " + message);
+}
+
+function logErrToday(message) {
+  log("Error", "Today", message);
+}
+
+logErrToday("Server die."); // Error – Today: Server die.
+```
+
+- Thay vì viết như thế, mình có thể viết đơn giản hơn bằng các dùng bind. Ở đây log là function cũ, logErrToday là function mới, được tạo ra bằng cách gán mặc định 2 tham số level và time.
+
+```js
+function log(level, time, message) {
+  console.log(level + " – " + time + ": " + message);
+}
+
+// Không có this nên set this là null
+// Set mặc định 2 tham số level và time
+var logErrToday = log.bind(null, "Error", "Today");
+
+// Hàm này tương ứng với log('Error', 'Today', 'Server die.')
+logErrToday("Server die.");
+// Error – Today: Server die.
+```
+
+- Partial Function còn được gọi là Curry (Nhiều người bảo 2 cái đó là một, nhiều người bảo 2 cái đấy khác nhau). Nếu bạn thấy khái niệm partial function/curry khá lạ tai cũng đừng lo, chúng ít được dùng trong Java, C# mà hay được sử dụng khá nhiều trong một số ngôn ngữ kiểu lập trình hàm (functional programming) như Haskell, F#, Scala,…. . Functional programming khá là khó học, dễ nhức đầu đau não, bạn nào muốn thử sức thì cứ kiếm ngôn ngữ Haskell mà phang nhé.
+
 Ideas: toidicodedao.com
