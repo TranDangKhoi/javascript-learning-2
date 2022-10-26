@@ -837,4 +837,72 @@ logErrToday("Server die.");
 
 - Partial Function còn được gọi là Curry (Nhiều người bảo 2 cái đó là một, nhiều người bảo 2 cái đấy khác nhau). Nếu bạn thấy khái niệm partial function/curry khá lạ tai cũng đừng lo, chúng ít được dùng trong Java, C# mà hay được sử dụng khá nhiều trong một số ngôn ngữ kiểu lập trình hàm (functional programming) như Haskell, F#, Scala,…. . Functional programming khá là khó học, dễ nhức đầu đau não, bạn nào muốn thử sức thì cứ kiếm ngôn ngữ Haskell mà phang nhé.
 
-Ideas: toidicodedao.com
+## Call và Apply, tuy 2 mà 1, thấy 1 mà 2
+
+- Đây là 1 cặp song sinh trong JavaScript. Hai hàm này nằm trong prototype của **Function(Function.prototype)**, do đó **chỉ function** mới có thể gọi. Chúng có chung một chức năng lại: Gọi 1 function, xác định tham số this, truyền các tham số còn lại vào.
+
+- Điểm khác nhau là apply truyền vào một array chứa toàn bộ các tham số còn call truyền lần lượt từng tham số. Dể dễ nhớ, ta có thể nhẩm **“A là một Array, C là nhiều Cục“.**
+
+- Ảnh chứa khái niệm về **apply**:
+  ![Anh](https://toidicodedao.files.wordpress.com/2016/02/apply.png?w=534&h=380)
+
+- Ảnh chứa khái niệm về **call**:
+  ![Anh](https://toidicodedao.files.wordpress.com/2016/02/call.png?w=546&h=336)
+
+- Cùng xem ví dụ đơn giản này về call và apply, bạn sẽ hiểu ngay:
+
+```js
+// Tìm max bằng cách gọi hàm Math.max
+Math.max(4, 3, 2, 10);
+
+// Thay vì gọi trực tiếp hàm Math.max, ta có thể dùng call
+// Set this bằng null
+Math.max.call(null, 4, 3, 2, 10);
+
+// Apply tương tự call, nhưng không truyền lần lượt
+// Mà truyền một array chứa toàn bộ các tham số
+Math.max.apply(null, [4, 3, 2, 10]);
+```
+
+- Call và apply thường được dùng để mượn hàm (borrowing function). Các bạn thử đọc xem dòng code dưới đây làm gì?
+
+```js
+function test(firstParam, secondParam, thirdParam) {
+  var args = Array.apply(null, arguments);
+  console.log(args);
+}
+
+test(1, 2, 3); // [1, 2, 3]
+```
+
+## Getter và Setter trong JS
+
+- Javascript cũng có khái niệm class và constructor như Java, C#, ... và nếu đã tồn tại 2 khái niệm này thì chắc chắn cũng sẽ tồn tại getter và setter, dưới đây là ví dụ về cách viết VÀ mình sẽ không nói gì thêm vì cái này khá cơ bản:
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  // Cách 1: được dùng phổ biến và nên dùng
+  get name() {
+    return this._name;
+  }
+  set name(name) {
+    return (this._name = name);
+  }
+  // Cách 2:
+  // getName() {
+  //   console.log(this.name);
+  // }
+  // setName(name) {
+  //   this.name = name;
+  // }
+}
+
+const person1 = new Person("John");
+console.log(person1.name);
+```
+
+  <br>
+  Ideas: toidicodedao.com
