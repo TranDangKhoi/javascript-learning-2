@@ -38,6 +38,28 @@ class View {
     const elm = document.querySelector(selector);
     return elm;
   }
+
+  get _todoValue() {
+    return this.todoInput.value;
+  }
+
+  _resetValue() {
+    this.todoInput.value = "";
+  }
+
+  displayTodos(todos) {
+    if (todos.length > 0) {
+      todos.forEach((todoText) => {
+        const todoItem = this.createElement("div", "todo-item");
+        const span = this.createElement("span", "todo-text");
+        span.textContent = todoText;
+        const icon = this.createElement("i");
+        icon.className = "fa-solid fa-trash todo-remove";
+        todoItem.append(span, icon);
+        thí.todoList.append(todoItem);
+      });
+    }
+  }
 }
 
 class Controller {
