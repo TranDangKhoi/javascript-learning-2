@@ -1,7 +1,20 @@
 // MVC
 
 class Model {
-  constructor() {}
+  constructor() {
+    this.todos = ["Finish learning useState", "Understand React's lifecycle"];
+  }
+
+  addTodo(todoText) {
+    if (todoText.length > 0) {
+      this.todos.push(todoText);
+    }
+  }
+
+  removeTodo(todoText) {
+    const index = this.todos.findIndex((item) => item === todoText);
+    this.todos.splice(index, 1);
+  }
 }
 
 class View {
@@ -55,10 +68,30 @@ class View {
         span.textContent = todoText;
         const icon = this.createElement("i");
         icon.className = "fa-solid fa-trash todo-remove";
+        icon.setAttribute("data-value", todoText);
         todoItem.append(span, icon);
-        thí.todoList.append(todoItem);
+        this.todoList.append(todoItem);
       });
     }
+  }
+
+  viewAddTodos(handler) {
+    this.todoForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (this._todoValue) {
+        handler(this._todoValue);
+        this._resetValue();
+      }
+    });
+  }
+
+  viewRemoveTodo(handler) {
+    this.todoList.addEventListener("click", (e) => {
+      if (e.target.matches(".todo-remove")) {
+        const value = e.target.dataset.value;
+        handler(value);
+      }
+    });
   }
 }
 
@@ -66,6 +99,7 @@ class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+    this.view.displayTodos(this.model.todos);
   }
 }
 
