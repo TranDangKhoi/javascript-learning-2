@@ -2,18 +2,29 @@
 
 class Model {
   constructor() {
-    this.todos = ["Finish learning useState", "Understand React's lifecycle"];
+    this.todos = JSON.parse(localStorage.getItem("todoList")) || [];
+  }
+
+  handleChangeToDo(handler) {
+    this.todoListChange = handler;
+  }
+
+  _reload(todos) {
+    this.todoListChange(todos);
+    localStorage.setItem("todoList", JSON.stringify(todos));
   }
 
   addTodo(todoText) {
     if (todoText.length > 0) {
       this.todos.push(todoText);
     }
+    this._reload(this.todos);
   }
 
   removeTodo(todoText) {
     const index = this.todos.findIndex((item) => item === todoText);
     this.todos.splice(index, 1);
+    this._reload(this.todos);
   }
 }
 
@@ -61,6 +72,9 @@ class View {
   }
 
   displayTodos(todos) {
+    while (this.todoList.firstChild) {
+      this.todoList.removeChild(this.todoList.firstChild);
+    }
     if (todos.length > 0) {
       todos.forEach((todoText) => {
         const todoItem = this.createElement("div", "todo-item");
@@ -88,6 +102,8 @@ class View {
   viewRemoveTodo(handler) {
     this.todoList.addEventListener("click", (e) => {
       if (e.target.matches(".todo-remove")) {
+        const todo = e.target.parentNode;
+        todo.parentNode.removeChild(todo);
         const value = e.target.dataset.value;
         handler(value);
       }
@@ -99,8 +115,23 @@ class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-    this.view.displayTodos(this.model.todos);
+    this.model.handleChangeToDo(this.handleChangeToDo);
+    this.view.viewAddTodos(this.handleAddTodo);
+    this.view.viewRemoveTodo(this.handleRemoveTodo);
+    this.handleChangeToDo(this.model.todos);
   }
+
+  handleChangeToDo = (todos) => {
+    this.view.displayTodos(todos);
+  };
+
+  handleAddTodo = (todoText) => {
+    this.model.addTodo(todoText);
+  };
+
+  handleRemoveTodo = (todoText) => {
+    this.model.removeTodo(todoText);
+  };
 }
 
 const app = new Controller(new Model(), new View());
