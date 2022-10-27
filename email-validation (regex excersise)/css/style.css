@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Lato:wght@300;400&family=Open+Sans:ital,wght@0,400;0,500;1,300;1,400&family=Oswald:wght@200;300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&family=Source+Code+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Poppins", "roboto", sans-serif;
+    font-size: 1.6rem;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 300px;
+    margin: 5rem auto;
+}
+
+.input {
+    width: 100%;
+    background: white;
+    font-size: 1.6rem;
+    border: 1px solid #eee;
+    border-radius: 5rem;
+    padding: 15px 25px;
+    padding-right: 5.5rem;
+    color: #333;
+    display: block;
+    outline: none;
+    box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+}
+
+
+.input.valid+.input-icons .fa-check {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.input.invalid+.input-icons .fa-times {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+
+.input-icons {
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-icons i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 450ms cubic-bezier(0.19, 1.4, 0.52, 1);
+    transform: scale(0);
+    position: absolute;
+}
+
+.input-icons .fa-check {
+    color: #06d629;
+}
+
+.input-icons .fa-times {
+    color: red;
+}
+
+.input-icons .fa-check,
+.input-icons .fa-times {
+    font-size: 2rem;
+}
+
+.check-list {
+    margin-top: 25px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #999;
+}
+
+.check-item {
+    margin-bottom: 15px;
+}
+
+.check-item.active {
+    color: #20e3b2;
+}
+
+.check-item.unactive {
+    color: #f00;
+}
+
+.check-item i {
+    font-size: 12px;
+    color: inherit;
+    margin-right: 10px;
+}

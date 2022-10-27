@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/5e5aa9c9c8.js" crossorigin=anonymous></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css">
+    <link rel="stylesheet" href="css/validation.css">
+</head>
+
+<body>
+    <div class="input-wrapper">
+        <input type="password" class="input input-password" placeholder="Enter your password">
+        <div class="input-icons">
+            <i class="fa-solid fa-check"></i>
+            <i class="fa-solid fa-times"></i>
+        </div>
+        <div class="check-list">
+            <div class="check-item check-length" data-validation="length">
+                <i class="fa-solid fa-circle"></i> Contains at least 8 characters
+            </div>
+            <div class="check-item check-upper">
+                <i class="fa-solid fa-circle"></i> Contains at least 1 uppercase character
+            </div>
+            <div class="check-item check-number">
+                <i class="fa-solid fa-circle"></i> Contains at least 1 number
+            </div>
+            <div class="check-item check-special">
+                <i class="fa-solid fa-circle"></i> Contains at least 1 special character
+            </div>
+        </div>
+    </div>
+    <script src="passwordvalidation.js"></script>
+</body>
+
+</html>
