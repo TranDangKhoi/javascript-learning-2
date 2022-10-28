@@ -70,6 +70,28 @@ VD: setTimeout ( expression, timeout ); <br>
 
 # Update v1.0.1:
 
+# Callback trong JS là gì ?
+
+- **Callback** là một khái niệm không hẳn là mới. Tuy nhiên, nó là một trong những khái niệm khá lằng nhằng và dễ gây nhầm lẫn trong lập trình. Với 1 số bạn có basic về **C++, Java hay C#**, ta thường biết đến **callback** qua khái niệm **delegate (con trỏ hàm)**.
+
+- Tuy nhiên, ở docs này thì mình sẽ viết về callback trong JS. Lý do là vì callback trong JS là đơn giản, dễ hiểu nhất
+
+- Đầu tiên, mình sẽ nhắc lại về khái niệm callback:
+
+  - `A callback is a piece of executable code that is passed as an argument to other code, which is expected to call back (execute) the argument at some convenient time.`
+
+- Nói một cách dễ hiểu, callback tức là ta truyền một đoạn code (Hàm A) này vào một đoạn code khác (Hàm B). Tới một thời điểm nào đó, Hàm A sẽ được hàm B gọi lại (callback).
+
+- Có thể tới đây bạn vẫn chưa hiểu? Ok mình sẽ làm một số ví dụ đơn giản sau đây
+
+- VD1:
+  - Bạn có việc phải đi công tác xa nhà. Bạn dặn vợ, trong thời gian bạn đi, nếu như có ai giao quà tới, hãy đem qua tặng em gái dễ thương hàng xóm. **Hàm A ở đây là việc tặng quà cho em hàng xóm**:
+  ```js
+  function tangQua(qua) {
+    return console.log("Đã tặng " + qua);
+  }
+  ```
+
 # offset, client, window
 
 - Về **offset** thì mình sẽ không giải thích nhiều, mà đi thẳng luôn vào ví dụ cho dễ hiểu:
@@ -904,5 +926,56 @@ const person1 = new Person("John");
 console.log(person1.name);
 ```
 
+## Giải thích về Event Loop
+
+- Ví dụ giờ tớ có một đoạn code nho nhỏ như sau:
+
+```js
+function task(msg) {
+  let number = 100000;
+  while (number > 0) {
+    number--;
+  }
+  console.log(msg);
+}
+
+console.log("Start");
+task("Loading");
+console.log("End");
+// Output:
+// Start
+// Loading
+// End
+```
+
+- Nhìn vào **output** của đoạn code trên, các bạn có thể nghĩ rằng là **"Ủa alo, cái này hoàn toàn bình thường mà"**, **NHƯNG**:
+
+- Có thể thấy rõ ràng thằng **function task()** phải mất nhiều thời gian mới chạy hết được trong lúc đó thì thằng **console.log("End")** nó phải đợi thằng **task("Loading")** chạy xong thì mới tới lượt nó chạy -> đây là **Blocking Script** -> thể hiện **tính chất đồng bộ trong JS (chạy từ trên xuống dưới)**
+
+- Để ngăn chặn tình trạng **Block Script** như trên xảy ra, thì ta sẽ phải sử dụng đến **tính bất đồng bộ trong Javascript**
+
+```js
+console.log("Start");
+setTimeout(() => {
+  task("Loading");
+}, 2000);
+console.log("End");
+// Output:
+// Start
+// End
+// Loading
+```
+
+- Tại sao output lại khác so với ban đầu ?? Sao thằng End lại chạy trước thằng task()
+- Đó là bởi vì setTimeout là một phần của Web APIs thực chất khi bạn thực thi dòng lệnh setTimeout
+- thì dòng code đó không phải là một phần của JS
+- ĐIỀU ĐÓ THÌ GIẢI THÍCH ĐƯỢC GÌ???
+- Trong JS thì khi bạn thực hiện một động tác liên quan đến Web APIs thì dòng code đó sẽ được truyền sang một bên khác để thực thi code riêng và khi thực hiện xong thì truyền vào một thứ gọi là callback queue
+- Còn các dòng code bên dưới sẽ tiếp tục được thực thi trong callstack
+- Và khi các dòng code trong callstack đó vẫn còn đang được thực thì các dòng lệnh liên quan tới web apis vẫn sẽ nằm trong callback queue
+- Chi tiết các bạn có thể tham khảo thêm tại:
+- [Javascript's Cycle](http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
+
+- Web APIs: setTimeout, fetch request, DOM Event
   <br>
   Ideas: toidicodedao.com

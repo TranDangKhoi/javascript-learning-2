@@ -7,6 +7,7 @@ function average(a, b) {
 }
 
 let result = average(10, 20);
+console.log(result);
 /*
  * add()
  * average()
