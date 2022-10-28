@@ -3,23 +3,23 @@
 // Lúc này trạng thái của các bạn sẽ là
 // status: pending (đang chờ)
 // Ba mẹ mua điện thoại cho các bạn
-// status: success (thành công)
+// status: fullfilled (thành công)
 // Ba mẹ không mua điện thoại cho các bạn
 // status: reject (bị từ chối)
 // new Promise(function(resolve, reject)) -> resolve tương ứng vs success
-let buyIphone = true;
-// let willBuyIphone = new Promise((resolve, reject) => {
+// let buyIphone = true;
+// let willBuyIphone = new Promise((fullfilled, reject) => {
 //   if (buyIphone) {
-//     resolve("Yay! I have a new iphone");
+//     fullfilled("Yay! I have a new iphone");
 //     console.log("OK");
 //   } else {
 //     reject("Oh no! I don't have any new phones");
 //     console.log("Not OK");
 //   }
 // })
-//   .then((success) => console.log(success))
+//   .then((fullfiled) => console.log(fullfiled))
 //   .catch((err) => console.log(err))
-//   .finally(() => console.log("Im still happy"));
+//   .finally(() => console.log("Im happy anyway"));
 
 // // // Ủa thế ở trên mới có 2 trường hợp là success và reject mà
 // // // Thế còn trường hợp pending đâu ??
@@ -89,9 +89,13 @@ let buyIphone = true;
 // Dùng promise.all
 
 // function makeTimer(timer = 1000, str) {
-//   return new Promise(function (resolve, reject) {
+//   return new Promise(function (fullfilled, rejected) {
 //     setTimeout(() => {
-//       resolve(str);
+//       if (str) {
+//         fullfilled(str);
+//       } else {
+//         rejected("Error");
+//       }
 //     }, timer);
 //   });
 // }
@@ -100,12 +104,13 @@ let buyIphone = true;
 // const timer2 = makeTimer(2000, "Second time");
 // const timer3 = makeTimer(3000, "Third time");
 
-// // // Lưu ý: tất cả phải trả về resolve thì mới thực hiện được dòng lệnh then
-// // // Trả về rejected khi có 1 cái promise nào đó bị reject
-// const timerTotal = Promise.all([timer1, timer2, timer3]).then((data) => {
-//   console.log(data);
-//   console.log("Hey bro");
-// });
+// // // // Lưu ý: tất cả phải trả về resolve thì mới thực hiện được dòng lệnh then
+// // // // Trả về rejected khi có 1 cái promise nào đó bị reject
+// const timerTotal = Promise.all([timer1, timer2, timer3])
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => console.log(err));
 
 // // VD: Mẹ bắt bạn làm việc nhà và phải làm xong 3 việc mới được nghỉ
 // // Thì promise.all cũng như vậy, phải thực hiện xong 3 cái promies nằm bên trong trong mảng
@@ -120,25 +125,42 @@ let buyIphone = true;
 //   console.log(data);
 // });
 
+// function đua_xe_F1(thời_gian_hoàn_thành, kết_quả) {
+//   return new Promise(function (fullfilled, rejected) {
+//     setTimeout(() => {
+//       if (kết_quả) {
+//         fullfilled(kết_quả);
+//       } else {
+//         rejected("Không hoàn thành được vòng đua/Sự cố xảy ra");
+//       }
+//     }, thời_gian_hoàn_thành);
+//   });
+// }
+
+// const xe_đua_1 = đua_xe_F1(7000, "xe_đua_1 về đích thứ ba");
+// const xe_đua_2 = đua_xe_F1(2000, "xe_đua_2 về đích thứ nhất");
+// const xe_đua_3 = đua_xe_F1(3000, "xe_đua_3 về đích thứ nhì");
+// const kết_quả_cuối_cùng = Promise.race([xe_đua_1, xe_đua_2, xe_đua_3])
+//   .then((success) => console.log(success))
+//   .catch((error) => console.log(error));
 // Promise.allSettled
 // -> trả về mảng chứa cả resolve lẫn reject
-function isFrontEndDev(language) {
-  return new Promise(function (resolve, reject) {
-    if (!language.includes("html")) {
-      reject("You are not front-end developer");
-    }
-    setTimeout(() => {
-      resolve("You are a front-end developer");
-    }, 1000);
-  });
-}
+// function isFrontEndDev(language) {
+//   return new Promise(function (resolve, reject) {
+//     if (!language.includes("html")) {
+//       reject("You are not front-end developer");
+//     }
+//     setTimeout(() => {
+//       resolve("You are a front-end developer");
+//     }, 1000);
+//   });
+// }
 
-const dev1 = isFrontEndDev(["html", "css"]);
-const dev2 = isFrontEndDev(["java", "c#"]);
-const devAll = Promise.allSettled([dev1, dev2]).then((data) => {
-  console.log(data);
-  console.log(data);
-});
+// const dev1 = isFrontEndDev(["html", "css"]);
+// const dev2 = isFrontEndDev(["java", "c#"]);
+// const devAll = Promise.allSettled([dev1, dev2]).then((data) => {
+//   console.log(data);
+// });
 
 // try-catch
 
@@ -166,20 +188,20 @@ const devAll = Promise.allSettled([dev1, dev2]).then((data) => {
 
 // async await: vẫn là promise -> chỉ để code clean hơn
 
-function wait(timer = 0) {
-  return new Promise(function (resolve, reject) {
-    setTimeout(resolve, timer);
-  });
-}
+// function wait(timer = 0) {
+//   return new Promise(function (resolve, reject) {
+//     setTimeout(resolve, timer);
+//   });
+// }
 
 // function expression
-async function run() {
-  console.log("Starting");
-  await wait(2000);
-  console.log("Running");
-  await wait(2000);
-  console.log("Ending");
-}
+// async function run() {
+//   console.log("Starting");
+//   await wait(2000);
+//   console.log("Running");
+//   await wait(2000);
+//   console.log("Ending");
+// }
 
 // run();
 

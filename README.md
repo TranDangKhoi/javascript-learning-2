@@ -977,12 +977,130 @@ console.log("End");
 - Đó là bởi vì setTimeout là một phần của Web APIs thực chất khi bạn thực thi dòng lệnh setTimeout
 - thì dòng code đó không phải là một phần của JS
 - ĐIỀU ĐÓ THÌ GIẢI THÍCH ĐƯỢC GÌ???
-- Trong JS thì khi bạn thực hiện một động tác liên quan đến Web APIs thì dòng code đó sẽ được truyền sang một bên khác để thực thi code riêng và khi thực hiện xong thì truyền vào một thứ gọi là callback queue
-- Còn các dòng code bên dưới sẽ tiếp tục được thực thi trong callstack
+- Trong JS thì khi bạn thực hiện một động tác liên quan đến Web APIs thì dòng code đó sẽ được truyền sang một bên khác (Web APIs) để thực thi code riêng và khi thực hiện xong thì truyền vào một thứ gọi là callback queue, đợi cho các dòng code nằm trong callstack thực hiện xong hết, sau đó mới đc nhảy vào callstack để thực hiện (lúc này thì timeout không còn nữa, vì nó đã được thực thi hết trong web apis).
 - Và khi các dòng code trong callstack đó vẫn còn đang được thực thì các dòng lệnh liên quan tới web apis vẫn sẽ nằm trong callback queue
+- Khi câu lệnh nằm trong Web APIs, cái nào xong trước thì sẽ nhảy vào callback queue trước, và đương nhiên, cũng sẽ được thực hiện trước các câu lệnh khác nằm trong Web APIs.
 - Chi tiết các bạn có thể tham khảo thêm tại:
 - [Javascript's Cycle](http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
 
 - Web APIs: setTimeout, fetch request, DOM Event
-  <br>
+
+## Promise là chi? Promise là ... lời hứa
+
+- Khái niệm promise được MDN giải thích một cách khá mù mờ và hơi… khó hiểu:
+
+  - `The Promise object is used for asynchronous computations. A Promise represents an operation that hasn't completed yet, but is expected in the future.`
+
+- Để dễ hiểu, mình gọi Promise là lời hứa. Tương tự như trong thực tế, có người hứa rồi làm, có người hứa rồi … thất hứa.
+
+- Một lời hứa có 3 trạng thái sau:
+
+  - pending: Hiện lời hứa chỉ là lời hứa suông, còn đang chờ người khác thực hiện
+  - fulfilled: Lời hứa đã được thực hiện
+  - reject: Bạn đã bị thất hứa, hay còn gọi là bị “sủi”
+
+- Khi xưa, để dụ bạn cố gắng học hành, bố mẹ bảo **“Ráng đậu đại học bố mẹ sẽ mua cho con BMW đi học cho bằng bạn bằng bè”**. Lúc này, thứ bạn nhận được là **một lời hứa**, chứ **không phải xe BMW**.
+
+```js
+// Hàm này trả ra lời hứa chứ không phải chiếc BMW
+function hứa_cho_có() {
+  return Promise((thuc_hien_loi_hua, that_hua) => {
+    // Sau 1 thời gian dài dài dàiiiiiii
+    // Nếu vui bố mẹ sẽ thực hiện lời hứa
+    if (vui) {
+      thuc_hien_loi_hua("Xe BMW");
+      // Lúc này trạng thái của lời hứa là fulfilled ^_^
+    } else {
+      that_hua("Xe dap");
+      // Lúc này trạng thái của lời hứa là rejected
+    }
+  });
+}
+
+// Lời hứa bây giờ đang là pending
+// Nếu được thực hiện, bạn có "Xe BMW"
+// Nếu bị reject, bạn có "Xe đạp"
+var promise = hứa_cho_có();
+promise
+  .then((xe_bmw) => {
+    console.log("Được chiếc BMW vui quá");
+  })
+  .catch((xe_dap) => {
+    console.log("Được chiếc xe đạp ….");
+  });
+```
+
+- Khi lời hứa được thực hiện, promise sẽ gọi callback trong hàm then. Ngược lại, khi bị thất hứa, promise sẽ gọi callback trong hàm catch.
+
+## Promise.all, Promise.race, Promise.allSettled
+
+- Promise.all: Chạy vào then khi tất cả promise trả về fullfilled, và ngược lại chạy vào catch khi 1 trong các Promise trả về rejected
+
+- VD (**LƯU Ý: ĐÂY CHỈ LÀ ĐOẠN CODE MÌNH VIẾT RA CHO DỄ HIỂU. NẾU ĐI LÀM HAY LÀM PROJECT, VUI LÒNG KHÔNG CODE TIẾNG VIỆT VÀ CODE CÓ DẤU NHƯ MÌNH**):
+
+- Ở hai gia đình khác nhau nọ, có hai người con được chiều chuộng, lúc nào cũng vòi vĩnh ba mẹ tiền, cho đến một ngày họ quyết định làm một kèo to đó chính là xin tiền ba mẹ mua Audi và BMW, ta cùng xử lý trường hợp này bằng đoạn code như sau
+
+```js
+var xe_được_mua_của_người_con_gia_đình_1 = ["BMW", "Volvo", "Huyndai"];
+// Gia đình thứ nhất chỉ đủ tiền để mua cho con BMW, Volvo và Huyndai, không đủ tiền để mua thêm Audi được
+
+var xe_được_mua_của_người_con_gia_đình_2 = ["BMW", "Audi", "Huyndai"];
+// Gia đình thứ hai đủ tiền mua cho con BMW, Audi và lại còn khuyến mãi thêm cả con Huyndai nữa
+
+// Ta tạo một CHỨC NĂNG dành cho 2 người con đó chính là xin tiền bố mẹ mua Audi và BMW
+function xinTienMuaAudiVaBMW(xe) {
+  return new Promise(function (fullfilled, rejected) {
+    // Nếu được mua Audi && được mua BMW
+    if (xe.includes("Audi") && xe.includes("BMW")) {
+      // fullfilled nếu mua được cả 2 xe
+      fullfilled("Cả hai người con đã có BMW và Audi, đi tán gái thôi !!");
+    } else {
+      // rejected nếu không mua được cái nào hoặc chỉ mua được 1 trong 2 xe
+      rejected("Một trong hai người con đã không có Audi và BMW");
+    }
+  });
+}
+
+let gia_đình_1 = xinTienMuaAudiVaBMW(xe_được_mua_của_người_gia_đình_1);
+let gia_đình_2 = xinTienMuaAudiVaBMW(xeDuocMua2);
+const lời_hứa_của_2_gia_đình = Promise.all([gia_dinh_1, gia_dinh_2])
+  .then((success) => console.log(success))
+  .catch((error) => console.log(error));
+
+//Output: Một trong hai người con đã không có Audi và BMW
+```
+
+- Promise.race: Trả về cái chạy nhanh nhất và trả về fullfilled
+
+- VD (**LƯU Ý: ĐÂY CHỈ LÀ ĐOẠN CODE MÌNH VIẾT RA CHO DỄ HIỂU. NẾU ĐI LÀM HAY LÀM PROJECT, VUI LÒNG KHÔNG CODE TIẾNG VIỆT VÀ CODE CÓ DẤU NHƯ MÌNH**):
+
+- Ví dụ, bạn đang xem một cuộc đua xe giải F1, tất cả các xe đều có thể chạy hoặc không chạy về đích, nhưng sẽ luôn luôn có 1 xe về đích sớm nhất và đạt được giải nhất, tên của người lái xe đó sẽ được hiển thị lên bảng điểm số ở vị trí đầu tiên. Ta sẽ xử lý bằng code ra sao?
+
+```js
+// Tạo một chức năng để các xe đua với nhau, truyền vào 2 thứ là thời gian hoàn thành và kết quả
+function đua_xe_F1(thời_gian_hoàn_thành, kết_quả) {
+  return new Promise(function (fullfilled, rejected) {
+    setTimeout(() => {
+      // Nếu có kết quả thì báo cáo xe về đích thứ bao nhiêu ?
+      if (kết_quả) {
+        fullfilled(kết_quả);
+      } else {
+        // Nếu không có kết quả tức là xe đã không hoàn thành được đường đua hoặc có sự cố ngoài ý muốn xảy ra (va chạm, tai nạn, bỏ đua, ...)
+        rejected("Không hoàn thành được vòng đua/Sự cố xảy ra");
+      }
+    }, thời_gian_hoàn_thành);
+  });
+}
+
+const xe_đua_1 = đua_xe_F1(7000, "xe_đua_1 về đích thứ ba");
+const xe_đua_2 = đua_xe_F1(2000, "xe_đua_2 về đích thứ nhất");
+const xe_đua_3 = đua_xe_F1(3000, "xe_đua_3 về đích thứ nhì");
+const kết_quả_cuối_cùng = Promise.race([xe_đua_1, xe_đua_2, xe_đua_3])
+  .then((success) => console.log(success))
+  .catch((error) => console.log(error));
+// Output: xe_đua_2 về đích thứ nhất
+// Vì có thời gian hoàn thành vòng đua sớm nhất là 2000ms, các xe còn lại cần nhiều thời gian hơn
+```
+
+- <br>
   Ideas: toidicodedao.com
