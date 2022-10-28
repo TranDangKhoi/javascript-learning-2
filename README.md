@@ -88,7 +88,14 @@ VD: setTimeout ( expression, timeout ); <br>
   - Bạn có việc phải đi công tác xa nhà. Bạn dặn vợ, trong thời gian bạn đi, nếu như có ai giao quà tới, hãy đem qua tặng em gái dễ thương hàng xóm. **Hàm A ở đây là việc tặng quà cho em hàng xóm**:
   ```js
   function tangQua(qua) {
-    return console.log("Đã tặng " + qua);
+    console.log("Đã tặng " + qua);
+  }
+  ```
+  - **Hàm B ở đây là việc vợ bạn ở nhà**. **Ta truyền hàm A vào như 1 argument cho hàm B**, tại 1 thời điểm nào đó, hàm B sẽ gọi hàm A (Tức là vợ bạn mang quà qua cho em hàng xóm).
+  ```js
+  function oNha(vo, tangQua) {
+    var qua = "Váy";
+    tangQua(qua);
   }
   ```
 
