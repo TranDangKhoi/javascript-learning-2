@@ -1102,5 +1102,76 @@ const kết_quả_cuối_cùng = Promise.race([xe_đua_1, xe_đua_2, xe_đua_3])
 // Vì có thời gian hoàn thành vòng đua sớm nhất là 2000ms, các xe còn lại cần nhiều thời gian hơn
 ```
 
+- Promise.allSettled: Trả về một mảng chứa cả những promise được fullfilled và những promise bị rejected
+
+## try-catch là gì ?
+
+- Ví dụ, bạn đang là thực tập sinh và anh mentor giao cho bạn 1 task gì đó khá căng não, anh ấy bảo với bạn rằng là "em hãy **CỐ GẮNG (try)** hết sức có thể để làm task đó và **SAU KHI** em đã cố gắng hết sức làm task rồi anh sẽ **BẮT LỖI (CATCH)** cho em.
+
+- try catch cũng giống như vậy, nếu đoạn code trong block try gặp lỗi thì lúc đó sẽ tới catch ra tay để tóm lỗi đó lại và hiển thị ra cho mình
+
+```js
+try {
+  // Quăng lỗi ra
+  throw new Error "Noi dung loi";
+} catch (e) {
+  // Đón nhận lỗi và in ra
+  // Vị trí này chỉ chạy khi ở try có quăng lỗi hoặc ở try
+  // sử dụng sai cú pháp ...
+  console.log(e.message);
+} finally {
+  // Cuối cùng chạy cái này
+  // Luôn luôn chạy sau cùng
+  console.log("End of try catch");
+}
+```
+
+# Sự báo đạo của async await trong JS
+
+- JavaScript là ngôn ngữ single-thread, tức là chỉ có một thread duy nhất để thực thi các dòng lệnh. Nếu chạy theo cơ chế đồng bộ (synchronous) thì khi thực hiện tính toán phức tạp, gọi API/AJAX request tới server, gọi database (trong NodeJS), thread này sẽ dừng để chờ, làm toàn bộ trình duyệt bị… treo.
+
+- Để tránh điều này, hầu hết code gọi API/AJAX request hoặc database trong JavaScript đều chạy theo cơ chế bất đồng bộ (asynchnous). Ban đầu, việc chạy code asynchnous trong JavaScript được hiện thực nhờ callback (như đoạn code bên dưới).
+
+```js
+// Truyền callback vào hàm ajax
+var callback = function (image) {
+  console.log(image);
+};
+ajax.get("gaixinh.info", callback);
+
+// Có thể viết gọn như sau
+ajax.get("gaixinh.info", function (image) {
+  console.log(image);
+});
+```
+
+- Tất nhiên, vì **callback** có một số nhược điểm như code dài dòng, **callback hell**,… nên người ta tạo ra 1 pattern mới gọi là **Promise!**
+
+- **Promise** đã giải quyết khá tốt những vấn đề của callback. Code trở nên dễ đọc, tách biệt và dễ bắt lỗi hơn.
+
+- [Ảnh](https://toidicodedao.files.wordpress.com/2017/10/screen-shot-2017-10-01-at-5-27-32-pm.jpg?w=410&h=186)
+
+- Tuy nhiên, dùng **promise** đôi khi ta vẫn thấy hơi khó chịu vì phải **truyền callback vào hàm then và catch**. Code cũng sẽ **hơi dư thừa và khó debug**, **vì toàn bộ các hàm then chỉ được tính là 1 câu lệnh nên không debug riêng từng dòng được**.
+
+- May thay, trong ES7 một phép màu mang tên **async/await** đã ra đời. (Mình nghi 99% là phép màu này ăn cắp từ C# hay ho, vì C# đã có **async/await** từ thời ông địa cởi trường rồi cơ).
+
+- [Ảnh](https://toidicodedao.files.wordpress.com/2017/10/screen-shot-2017-10-01-at-5-32-42-pm.jpg?w=448&h=155)
+
+- Vậy async/await có gì hay ho? Chúng giúp chúng ta viết code trông có vẻ đồng bộ (synchronous), nhưng thật ra lại chạy bất đồng bộ (asynchronous).
+
+- Như trong hình phía trên, hàm `findRandomImgPromise` là **hàm bất đồng bộ**, **trả về một Promise**. Với **từ khoá await**, ta **có thể coi** hàm này là **đồng bộ**, **câu lệnh phía sau chỉ được chạy sau khi hàm này trả về kết quả.**
+
+#### Vậy tại sao ta nên dùng async/await ?
+
+- Code dễ đọc hơn rất rất nhiều, không cần phải then rồi catch gì cả, chỉ viết như code chạy tuần tự, sau đó dùng try/catch thông thường để bắt lỗi.
+
+- Viết vòng lặp qua từng phần tử trở nên vô cùng đơn giản, chỉ việc await trong mỗi vòng lặp.
+
+- Debug dễ hơn nhiều, vì mỗi lần dùng await được tính là một dòng code, do đó ta có thể đặt debugger để debug từng dòng như thường.
+
+- Khi có lỗi, exception sẽ chỉ ra lỗi ở dòng số mấy chứ không chung chung là un-resolved promise.
+
+- Với promise hoặc callback, việc kết hợp if/else hoặc retry với code asynchnous là một cực hình vì ta phải viết code lòng vòng, rắc rối. Với async/await, việc này vô cùng dễ dàng.
+
 - <br>
   Ideas: toidicodedao.com
