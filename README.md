@@ -1173,5 +1173,120 @@ ajax.get("gaixinh.info", function (image) {
 
 - Với promise hoặc callback, việc kết hợp if/else hoặc retry với code asynchnous là một cực hình vì ta phải viết code lòng vòng, rắc rối. Với async/await, việc này vô cùng dễ dàng.
 
+## API là gì ?
+
+- API là viết tắt của Application Programming Interface – phương thức trung gian để kết nối các ứng dụng và thư viện khác nhau.
+
+- Để hiểu rõ hơn API là gì, hãy tưởng tượng bạn đang ngồi trong một nhà hàng, trước mặt bạn là menu để gọi thức ăn. Nhà bếp là một phần của “hệ thống”, nơi sẽ chuẩn bị những món ăn mà bạn gọi. Tuy nhiên, làm thế nào để nhà bếp biết được bạn muốn ăn món nào? Và làm sao để họ phân phối thức ăn đến bàn của bạn? Đây là lúc cần đến sự xuất hiện của người phục vụ, đóng vai trò như API.
+
+- Người phục vụ (hay API) sẽ nhận yêu cầu từ bạn và truyền đạt với nhà bếp (hệ thống) những thứ cần làm. Sau đó người phục vụ sẽ phản hồi ngược lại cho bạn, trong trường hợp này, họ sẽ mang thức ăn sau khi nhà bếp hoàn thành đến tận bàn cho bạn.
+
+## Cách để gọi đồ ăn từ Menu (gọi API)
+
+- Sau khi bạn đã hiểu rõ về promise và async await rồi, chắc chắn học về API bạn sẽ nắm rõ hơn những người chưa hiểu gì về nó.
+
+**- B1: ta cần biết endpoint nghĩa là gì ?**
+
+- Khi bạn lên bất kì trang web nào có api, nó cũng sẽ có một đoạn url mà ta cần sử dụng để gọi tới API. VD: `https://abc.com/foo/bar`.
+
+- Và lúc này trong `https://abc.com/foo/bar`, thì `/foo/bar` chính là endpoint.
+
+**- B2: Sử dụng hàm fetch có sẵn trong JS để lấy ra thông tin API**
+
+- VD:
+
+```js
+const endpoint = `https://api.github.com/users`;
+const promise = fetch(endpoint);
+console.log(promise);
+// Output:
+// [[Prototype]]: Promise
+// [[PromiseState]]: "fulfilled"
+// [[PromiseResult]]: Response
+```
+
+- Lúc này bạn sẽ được trả về Promise, và PromiseState là fullfilled -> điều này chứng tỏ rằng là bạn đã gọi đồ ăn (gọi API) thành công, giờ tới lượt người phục vụ sẽ mang thức ăn đến chỗ bạn ngồi (trả về thông tin của API).**Vậy nên bây giờ ta phải "viết code" cho người phục vụ để họ mang món ăn tới chỗ bạn**
+
+```js
+const endpoint = `https://api.github.com/users`;
+const usernameElm = document.querySelector(".username");
+// fetch data
+
+async function displayUser(username) {
+  try {
+    // Trước khi người bồi bàn mang món ăn ra cho bạn, thì chúng ta sẽ trong trạng thái ngồi đợi (trạng thái Loading...)
+    console.log("Loading...");
+    // Đây là quá trình mà các người làm bếp họ đang chế biến món ăn của ta (hay nói cách khác là mình đang sử dụng fetch để lấy ra thông tin từ api và mình phải đợi cho nó lấy xong, mỗi api sẽ có một khoảng thời gian chờ khác nhau tùy vào độ nhanh của chúng)
+    const promise = await fetch(endpoint);
+    // Đây là lúc mà món ăn của bạn đã được nấu ăn xong, người bồi bàn lúc này sẽ mang món ăn tới chỗ của bạn để bạn thưởng thức
+    const userData = await promise.json();
+  } catch (error) {
+    // Nếu có sự cố bất cập nào (Bếp không còn đủ nguyên liệu/ món ăn đó đã hết hàng) thì ta in ra console No data found
+    console.log("No data found");
+  }
+```
+
+## Những điều chỉnh riêng của từng API (luật riêng của từng nhà)
+
+- Khi làm việc với APIs, sẽ có một số thứ bạn phải tìm hiểu thêm như là về CORS và sâu hơn nữa là Headers.
+
+- Cũng giống như ngoài đời vậy, khi bạn sang nhà người khác, mỗi nhà sẽ có một luật/chuẩn mực riêng, nhà thì cứ đi cả dép vào trong nhà cũng được, không sao hết, nhà thì phải để dép ở ngoài rồi mới được đi vào,... và còn rất nhiều thứ luật lệ khác nữa.
+
+- Đối với APIs cũng vậy, ta cũng sẽ có điều chỉnh riêng cho các loại API khác nhau. Ví dụ như API `icanhazdadjoke`, nếu ta không điều chỉnh gì cho nó, mà viết 1 đoạn code fetch API đơn giản giống như trên:
+
+```js
+const $ = document.querySelector.bind(document);
+const apiEndpoint = "https://icanhazdadjoke.com/";
+
+async function getJokes() {
+  try {
+    // const res = await fetch(apiEndpoint, {
+    //   headers: {
+    //     Accept: "application/json",
+    //   },
+    // });
+    const res = await fetch(apiEndpoint);
+    const data = await res.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+getJokes();
+```
+
+- Thì ta sẽ nhận được lỗi như sau: `SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON`. **Điều gì đã gây nên tình trạng này you may ask?**. Đó là bởi vì API này không trả về json mà là trả về một file HTML. Đây là lúc ta sẽ phải đụng vào phần `Network` trong F12.
+
+- [Ảnh](https://discloud-storage.herokuapp.com/file/0d744771994fcd2234075e541dcc8554/api.png)
+
+- Đó như mình nói, API này đang trả về dưới dạng HTML, nhưng ta lại đang muốn nó trả về dưới dạng JSON để xử lí. Vậy nên ta phải code lại như sau:
+
+```js
+const $ = document.querySelector.bind(document);
+const apiEndpoint = "https://icanhazdadjoke.com/";
+
+async function getJokes() {
+  try {
+    // Nhét vào headers một propery Accept: "application/json" để convert sang JSON
+    const res = await fetch(apiEndpoint, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+getJokes();
+```
+
+## CORS là gì, tại sao lại sinh ra CORS ?
+
+- CORS là Cross origin resource sharing
+
 - <br>
   Ideas: toidicodedao.com

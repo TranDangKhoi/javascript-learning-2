@@ -88,21 +88,21 @@
 
 // Dùng promise.all
 
-// function makeTimer(timer = 1000, str) {
-//   return new Promise(function (fullfilled, rejected) {
-//     setTimeout(() => {
-//       if (str) {
-//         fullfilled(str);
-//       } else {
-//         rejected("Error");
-//       }
-//     }, timer);
-//   });
-// }
+function makeTimer(timer = 1000, str) {
+  return new Promise(function (fullfilled, rejected) {
+    setTimeout(() => {
+      if (str) {
+        fullfilled(str);
+      } else {
+        rejected("Error");
+      }
+    }, timer);
+  });
+}
 
-// const timer1 = makeTimer(1000, "First time");
-// const timer2 = makeTimer(2000, "Second time");
-// const timer3 = makeTimer(3000, "Third time");
+const timer1 = makeTimer(1000, "First time");
+const timer2 = makeTimer(2000, "Second time");
+const timer3 = makeTimer(3000, "Third time");
 
 // // // // Lưu ý: tất cả phải trả về resolve thì mới thực hiện được dòng lệnh then
 // // // // Trả về rejected khi có 1 cái promise nào đó bị reject
