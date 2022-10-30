@@ -1149,13 +1149,13 @@ ajax.get("gaixinh.info", function (image) {
 
 - **Promise** đã giải quyết khá tốt những vấn đề của callback. Code trở nên dễ đọc, tách biệt và dễ bắt lỗi hơn.
 
-- [Ảnh](https://toidicodedao.files.wordpress.com/2017/10/screen-shot-2017-10-01-at-5-27-32-pm.jpg?w=410&h=186)
+- ![Ảnh](https://toidicodedao.files.wordpress.com/2017/10/screen-shot-2017-10-01-at-5-27-32-pm.jpg?w=410&h=186)
 
 - Tuy nhiên, dùng **promise** đôi khi ta vẫn thấy hơi khó chịu vì phải **truyền callback vào hàm then và catch**. Code cũng sẽ **hơi dư thừa và khó debug**, **vì toàn bộ các hàm then chỉ được tính là 1 câu lệnh nên không debug riêng từng dòng được**.
 
 - May thay, trong ES7 một phép màu mang tên **async/await** đã ra đời. (Mình nghi 99% là phép màu này ăn cắp từ C# hay ho, vì C# đã có **async/await** từ thời ông địa cởi trường rồi cơ).
 
-- [Ảnh](https://toidicodedao.files.wordpress.com/2017/10/screen-shot-2017-10-01-at-5-32-42-pm.jpg?w=448&h=155)
+- ![Ảnh](https://toidicodedao.files.wordpress.com/2017/10/screen-shot-2017-10-01-at-5-32-42-pm.jpg?w=448&h=155)
 
 - Vậy async/await có gì hay ho? Chúng giúp chúng ta viết code trông có vẻ đồng bộ (synchronous), nhưng thật ra lại chạy bất đồng bộ (asynchronous).
 
@@ -1258,7 +1258,7 @@ getJokes();
 
 - Thì ta sẽ nhận được lỗi như sau: `SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON`. **Điều gì đã gây nên tình trạng này you may ask?**. Đó là bởi vì API này không trả về json mà là trả về một file HTML. Đây là lúc ta sẽ phải đụng vào phần `Network` trong F12.
 
-- [Ảnh](https://discloud-storage.herokuapp.com/file/0d744771994fcd2234075e541dcc8554/api.png)
+- ![Ảnh](https://discloud-storage.herokuapp.com/file/0d744771994fcd2234075e541dcc8554/api.png)
 
 - Đó như mình nói, API này đang trả về dưới dạng HTML, nhưng ta lại đang muốn nó trả về dưới dạng JSON để xử lí. Vậy nên ta phải code lại như sau:
 
