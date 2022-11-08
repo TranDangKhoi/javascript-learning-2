@@ -1286,7 +1286,43 @@ getJokes();
 
 ## CORS là gì, tại sao lại sinh ra CORS ?
 
-- CORS là Cross origin resource sharing
+- CORS là Cross origin resource sharing, hiện tại mình cũng chưa hiểu lắm về thằng này nên mình sẽ chỉ nói những thứ mình biết sơ sơ về nó:
+
+  - CORS có một khái niệm là same origin, same origin có chức năng là check xem ta có đang trong cùng 1 domain không ( domain là gì? domain là đường link nằm trước dấu / của trang web như www.facebook.com, www.youtube.com ), nếu không có cái này thì khi các bạn vô tình vào một trang web nào đó chứa mã độc, nó cũng có thể gửi mã độc vào các web khác bạn đang mở, vô cùng nguy hiểm. Nói chung là, tab nào thì sẽ chỉ gửi request đc của tab đó
+  - VD về same origin: `https://github.com/TranDangKhoi/javascript-learning-2` và `https://github.com/TranDangKhoi/` và `https://github.com`, 3 cái này đều có same origin, hay nói cách khác là cùng domain `https://github.com`
+  - access-control-allow-origin: \* -> Cho phép mọi domain truy cập
+
+## Các status hay gặp khi call api
+
+- 200: Success (mỗi lần GET thì trả về, hoặc trả về khi thành công 1 cái gì đó)
+
+- 201: Create (Tạo dữ liệu thành công)
+
+- 301: Moved Permanently: Domain thay đổi hoàn toàn
+
+- 307: Temporary Redirect
+
+- 400: Bad Request (mạng chậm, lỗi)
+
+- 401: Unauthorized (Không đủ quyền, thường là do chưa đăng nhập)
+
+- 403: Forbidden (Không truy cập được)
+
+- 404: Not found (Không tìm được trang)
+
+- 408: Request timeout (Mạng lag quá, thời gian response quá lâu)
+
+## Các method khi call api
+
+- GET: Lấy dữ liệu từ APIs về để xử lí
+
+- POST: Thêm dữ liệu vào database
+
+- PUT: Update lại toàn bộ dữ liệu, sửa lại toàn bộ dữ liệu
+
+- PATCH: Update lại một phần dữ liệu, sửa lại một phần dữ liệu
+
+- DELETE: Xóa dữ liệu khỏi database
 
 - <br>
   Ideas: toidicodedao.com
