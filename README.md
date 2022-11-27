@@ -1324,5 +1324,42 @@ getJokes();
 
 - DELETE: Xóa dữ liệu khỏi database
 
+# Generator Function là gì?
+
+- Đầu tiên Generator Function có cú pháp là: `function* myGeneratorFunction(){}`, khác với cái function bình thường thì generator function có một dấu `*`
+
+- Khi chúng ta gọi Generator function, nó không trả về các kiểu dữ liệu cơ bản mà là một iterator object. Hàm next() của iterator object được sử dụng để truy xuất các node dữ liệu sau mỗi bước resume lại generator function. Khi đó generator function sẽ thực thi hàm cho đến khi gặp từ khóa yield , hoặc return kế tiếp chưa được duyệt ở bước trước.
+  P/s : Iterator định nghĩa một chuẩn để tạo ra list các giá trị hữu hạn hoặc thậm chí vô hạn. Nó giúp bạn lấy ra giá trị mong muốn khi list kết quả đã được khởi tạo xong toàn bộ.
+
+- Bên trong Generator Function thì có một keyword được sử dụng rất nhiều, đó chính là `yield` và 1 function là `next()`:
+
+  - yield được sử dụng ở một vài nơi và có vẻ khái niệm cũng hơi khác nhau. Trong ruby, Javascript hay làm chỉ định trong Laravel ... mỗi nơi có một định nghĩa và cách sử dụng khác nhau. Tuy nhiên trong Javascript thì yield lại khá dễ hiểu và dễ hình dung nhé:
+
+    - Về cơ bản, yield là từ khóa dùng để tạm dừng và cũng để tiếp tục việc thực thi bên trong generator function.
+
+  ```js
+  function* generatorFunc(index) {
+    while (index < 2) {
+      yield index++;
+    }
+  }
+
+  const iterator = generatorFunc(0);
+
+  console.log(iterator.next());
+  // log output: {value : 0, done : false}
+
+  console.log(iterator.next());
+  // log output: {value : 1, done : false}
+
+  console.log(iterator.next());
+  // log output: {value : underfined, done : true}
+  ```
+
+  - Như đã đề cập ở trên thì iterator được khởi tạo bằng generatorFunc với index bắt đầu bằng 0. Bạn có thể thấy yield ở đây, trong ví dụ này chính là một phiên bản khác giống như return vậy. Nó trả về một đối tượng IteratorResult với hai thuộc tính là "value" và "done":
+
+  - value : kết quả của biểu thức trả về.
+  - done : nhận giá trị false nếu quá trình generator chưa hoàn thành, true nếu ngược lại.
+
 - <br>
   Ideas: toidicodedao.com
