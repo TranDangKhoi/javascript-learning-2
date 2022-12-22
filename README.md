@@ -1359,5 +1359,9 @@ getJokes();
   - value : kết quả của biểu thức trả về.
   - done : nhận giá trị false nếu quá trình generator chưa hoàn thành, true nếu ngược lại.
 
+# Big O Notation
+
+- Là sự đo lường về độ phức tạp của một thuật toán
+
 - <br>
   Ideas: toidicodedao.com
