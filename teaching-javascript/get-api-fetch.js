@@ -1,13 +1,14 @@
-const getJokesBtn = document.querySelector(".get-joke-btn");
-const jokeHeading = document.querySelector(".joke-heading");
+const getJokeButton = document.querySelector(".get-joke-btn");
+const jokeContent = document.querySelector(".joke-content");
+getJokeButton.addEventListener("click", fetchCauDua);
 
-getJokesBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
-  const res = await fetch("https://icanhazdadjoke.com/", {
+async function fetchCauDua() {
+  const response = await fetch("https://icanhazdadjoke.com/", {
     headers: {
       Accept: "application/json",
     },
   });
-  const data = await res.json();
-  jokeHeading.textContent = data.joke;
-});
+  const data = await response.json();
+  console.log(data);
+  jokeContent.textContent = data.joke;
+}
